@@ -1,12 +1,12 @@
 const siteMetadata = {
-  title: 'Next.js Starter Blog',
-  author: 'Tails Azimuth',
-  headerTitle: 'TailwindBlog',
-  description: 'A blog created with Next.js and Tailwind.css',
+  title: 'Listen German Stories: Explore, Read, and Listen to Captivating Stories in German',
+  author: 'Irving Zamora',
+  headerTitle: 'Listen German Stories',
+  description: 'Improve your German reading and listening skills with engaging stories brought to life through audio.',
   language: 'en-us',
   theme: 'system', // system, dark or light
   siteUrl: 'https://tailwind-nextjs-starter-blog.vercel.app',
-  siteRepo: 'https://github.com/timlrx/tailwind-nextjs-starter-blog',
+  siteRepo: 'https://github.com/irvingzamora28/listengermanstories',
   siteLogo: '/static/images/logo.png',
   image: '/static/images/avatar.png',
   socialBanner: '/static/images/twitter-card.png',
