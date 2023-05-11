@@ -57,7 +57,7 @@ const LayoutWrapper = ({ children }) => {
               <Image className="object-cover" src="/static/images/hero-image.png" layout="fill" objectFit="cover" quality={100} alt="Hero Background" />
               <div className="absolute inset-0 flex items-center justify-center text-center text-6xl font-bold text-white">
                 <span className="">
-                  <span className="text-shadow-sm text-6xl">Listen German Stories</span>
+                  <span className="text-shadow-sm text-3xl md:text-5xl">Listen German Stories</span>
                 </span>
               </div>
             </div>
