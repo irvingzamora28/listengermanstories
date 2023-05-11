@@ -10,8 +10,18 @@
   @apply list-none;
 }
 
+.text-shadow {
+  @apply mb-8 text-white;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.9);
+}
+
+.text-shadow-sm {
+  @apply mb-8 text-white;
+  text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4);
+}
+
 .footnotes {
-  @apply pt-8 mt-12 border-t border-gray-200 dark:border-gray-700;
+  @apply mt-12 border-t border-gray-200 pt-8 dark:border-gray-700;
 }
 
 .csl-entry {
