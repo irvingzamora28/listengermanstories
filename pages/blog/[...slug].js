@@ -2,7 +2,7 @@ import fs from 'fs'
 import PageTitle from '@/components/PageTitle'
 import generateRss from '@/lib/generate-rss'
 import { MDXLayoutRenderer } from '@/components/MDXComponents'
-import { formatSlug, getAllFilesFrontMatter, getFileBySlug, getFiles } from '@/lib/mdx'
+import { formatSlug, getFileBySlug, getFiles, getFilesFrontMatter } from '@/lib/mdx'
 
 const DEFAULT_LAYOUT = 'PostLayout'
 
@@ -19,7 +19,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const allPosts = await getAllFilesFrontMatter('blog')
+  const allPosts = await getFilesFrontMatter('blog')
   const postIndex = allPosts.findIndex((post) => formatSlug(post.slug) === params.slug.join('/'))
   const prev = allPosts[postIndex + 1] || null
   const next = allPosts[postIndex - 1] || null
@@ -46,15 +46,7 @@ export default function Blog({ post, authorDetails, prev, next }) {
   return (
     <>
       {frontMatter.draft !== true ? (
-        <MDXLayoutRenderer
-          layout={frontMatter.layout || DEFAULT_LAYOUT}
-          toc={toc}
-          mdxSource={mdxSource}
-          frontMatter={frontMatter}
-          authorDetails={authorDetails}
-          prev={prev}
-          next={next}
-        />
+        <MDXLayoutRenderer layout={frontMatter.layout || DEFAULT_LAYOUT} toc={toc} mdxSource={mdxSource} frontMatter={frontMatter} authorDetails={authorDetails} prev={prev} next={next} />
       ) : (
         <div className="mt-24 text-center">
           <PageTitle>

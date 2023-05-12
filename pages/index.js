@@ -2,100 +2,137 @@ import Link from '@/components/Link'
 import { PageSEO } from '@/components/SEO'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
-import { getAllFilesFrontMatter } from '@/lib/mdx'
+import { getFilesFrontMatter, sortPostsByDate, sortPostsByPopularity } from '@/lib/mdx'
 import formatDate from '@/lib/utils/formatDate'
 
 import NewsletterForm from '@/components/NewsletterForm'
+import Image from 'next/image'
+import { getAllTags } from '@/lib/tags'
+import kebabCase from '@/lib/utils/kebabCase'
 
-const MAX_DISPLAY = 5
+const MAX_DISPLAY = 10
+const MAX_LATEST = 5
+const MAX_TAGS = 5
 
 export async function getStaticProps() {
-  const posts = await getAllFilesFrontMatter('blog')
+  const posts = await getFilesFrontMatter('blog')
+  const popular = await sortPostsByPopularity(posts.slice(0, MAX_DISPLAY))
+  const latest = await sortPostsByDate(posts)
+  const tags = await getAllTags('blog')
+  const sortedTags = Object.keys(tags).sort((a, b) => tags[b] - tags[a])
 
-  return { props: { posts } }
+  console.log(popular)
+  return {
+    props: {
+      popular,
+      latest,
+      sortedTags,
+    },
+  }
 }
 
-export default function Home({ posts }) {
+export default function Home({ popular, latest, sortedTags }) {
   return (
     <>
       <PageSEO title={siteMetadata.title} description={siteMetadata.description} />
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="space-y-2 pt-6 pb-8 md:space-y-5">
-          <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-            Latest
-          </h1>
-          <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-            {siteMetadata.description}
-          </p>
-        </div>
-        <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-          {!posts.length && 'No posts found.'}
-          {posts.slice(0, MAX_DISPLAY).map((frontMatter) => {
-            const { slug, date, title, summary, tags } = frontMatter
-            return (
-              <li key={slug} className="py-12">
-                <article>
-                  <div className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
-                    <dl>
-                      <dt className="sr-only">Published on</dt>
-                      <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                        <time dateTime={date}>{formatDate(date)}</time>
-                      </dd>
-                    </dl>
-                    <div className="space-y-5 xl:col-span-3">
-                      <div className="space-y-6">
-                        <div>
-                          <h2 className="text-2xl font-bold leading-8 tracking-tight">
-                            <Link
-                              href={`/blog/${slug}`}
-                              className="text-gray-900 dark:text-gray-100"
-                            >
-                              {title}
-                            </Link>
-                          </h2>
-                          <div className="flex flex-wrap">
-                            {tags.map((tag) => (
-                              <Tag key={tag} text={tag} />
-                            ))}
-                          </div>
-                        </div>
-                        <div className="prose max-w-none text-gray-500 dark:text-gray-400">
-                          {summary}
-                        </div>
-                      </div>
-                      <div className="text-base font-medium leading-6">
-                        <Link
-                          href={`/blog/${slug}`}
-                          className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                          aria-label={`Read "${title}"`}
-                        >
-                          Read more &rarr;
+      <section className="flex flex-col">
+        <div className="flex flex-col">
+          <div className="flex flex-col items-center p-4 md:flex-row md:justify-between">
+            <div className="mb-2 flex w-full items-center overflow-x-auto md:mb-0 md:w-4/5">
+              <div className="flex flex-nowrap">
+                {Object.keys(sortedTags).length === 0 && 'No tags found.'}
+                {sortedTags.slice(0, MAX_TAGS).map((t) => {
+                  return (
+                    <div key={t} className="mb-2 mr-5 mt-2">
+                      <Link href={`/tags/${kebabCase(t)}`} className="text-sm font-semibold uppercase text-gray-600 dark:text-gray-300">
+                        <Tag text={t} />
+                      </Link>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+            <div className="flex-grow text-right md:w-auto">
+              <button className="rounded bg-primary-500 px-4 py-2 font-bold text-white hover:bg-primary-700">Suscribirse</button>
+            </div>
+          </div>
+
+          <div className="flex flex-1 flex-col md:flex-row">
+            {!popular.length && 'No posts found.'}
+            <div className="container__blogs mr-2 flex w-full flex-wrap justify-between md:w-4/5">
+              {popular.slice(0, MAX_DISPLAY).map((frontMatter) => {
+                const { slug, date, title, summary, tags, popularity, images, authors } = frontMatter
+                return (
+                  <article key={slug} className="mb-4 w-full px-4 md:w-1/3">
+                    <div className="mx-auto max-w-md overflow-hidden rounded-lg bg-white shadow">
+                      {images && images.length > 0 && <Image src={images[0]} className="aspect-video w-full object-cover" width={600} height={400} alt="" />}
+                      <div className="p-4">
+                        <p className="mb-1 text-sm text-primary-500">
+                          Max Müller
+                          <time dateTime={date} className="tex-base float-right font-medium leading-6 text-gray-500 dark:text-gray-400">
+                            {formatDate(date)}
+                          </time>
+                        </p>
+                        <Link href={`/blog/${slug}`}>
+                          <h3 className="text-xl font-medium text-gray-900">{title}</h3>
                         </Link>
+                        <p className="mt-1 text-gray-500">{summary}</p>
+                        <div className="mt-4 flex flex-wrap gap-2">
+                          {tags.map((tag) => (
+                            <Tag key={tag} text={tag} />
+                          ))}
+                        </div>
+                        <div className="mt-4 flex justify-end gap-2">
+                          <Link href={`/blog/${slug}`} className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400" aria-label={`Read "${title}"`}>
+                            Leer más &rarr;
+                          </Link>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </article>
-              </li>
-            )
-          })}
-        </ul>
-      </div>
-      {posts.length > MAX_DISPLAY && (
-        <div className="flex justify-end text-base font-medium leading-6">
-          <Link
-            href="/blog"
-            className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-            aria-label="all posts"
-          >
-            All Posts &rarr;
-          </Link>
+                  </article>
+                )
+              })}
+            </div>
+            <div className="container__latest-posts ml-2 w-full px-4 md:w-1/5">
+              <div className="mb-4">
+                <h2 className="mb-2 text-lg font-medium text-gray-800">Historias recientes</h2>
+                <ul>
+                  {latest.slice(0, MAX_LATEST).map((frontMatter, index) => {
+                    const { slug, date, title, summary, tags } = frontMatter
+                    return (
+                      <li key={slug} className={`mb-4 text-gray-900 ${index < MAX_DISPLAY - 1 ? 'border-b border-gray-300 pb-4' : ''}`}>
+                        <div className="flex flex-col">
+                          <div>
+                            <Link href={`/blog/${slug}`}>{title}</Link>
+                            <span className="block text-sm text-gray-500">Published on {formatDate(date)}</span>
+                          </div>
+                          <div>
+                            <Link href={`/blog/${slug}`} className="float-right ml-4 mt-2 rounded bg-primary-500 px-3 py-1 text-sm font-semibold leading-none text-white transition-colors duration-200 hover:bg-primary-600">
+                              Leer más
+                            </Link>
+                          </div>
+                        </div>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
-      )}
-      {siteMetadata.newsletter.provider !== '' && (
-        <div className="flex items-center justify-center pt-4">
-          <NewsletterForm />
-        </div>
-      )}
+        {popular.length > MAX_DISPLAY && (
+          <div className="flex justify-end text-base font-medium leading-6">
+            <Link href="/blog" className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400" aria-label="Todas las historias">
+              Todas las historias &rarr;
+            </Link>
+          </div>
+        )}
+        {siteMetadata.newsletter.provider !== '' && (
+          <div className="flex items-center justify-center pt-4">
+            <NewsletterForm />
+          </div>
+        )}{' '}
+      </section>
     </>
   )
 }

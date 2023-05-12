@@ -2,7 +2,7 @@ import { TagSEO } from '@/components/SEO'
 import siteMetadata from '@/data/siteMetadata'
 import ListLayout from '@/layouts/ListLayout'
 import generateRss from '@/lib/generate-rss'
-import { getAllFilesFrontMatter } from '@/lib/mdx'
+import { getFilesFrontMatter } from '@/lib/mdx'
 import { getAllTags } from '@/lib/tags'
 import kebabCase from '@/lib/utils/kebabCase'
 import fs from 'fs'
@@ -24,10 +24,8 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const allPosts = await getAllFilesFrontMatter('blog')
-  const filteredPosts = allPosts.filter(
-    (post) => post.draft !== true && post.tags.map((t) => kebabCase(t)).includes(params.tag)
-  )
+  const allPosts = await getFilesFrontMatter('blog')
+  const filteredPosts = allPosts.filter((post) => post.draft !== true && post.tags.map((t) => kebabCase(t)).includes(params.tag))
 
   // rss
   if (filteredPosts.length > 0) {
@@ -45,10 +43,7 @@ export default function Tag({ posts, tag }) {
   const title = tag[0].toUpperCase() + tag.split(' ').join('-').slice(1)
   return (
     <>
-      <TagSEO
-        title={`${tag} - ${siteMetadata.author}`}
-        description={`${tag} tags - ${siteMetadata.author}`}
-      />
+      <TagSEO title={`${tag} - ${siteMetadata.author}`} description={`${tag} tags - ${siteMetadata.author}`} />
       <ListLayout posts={posts} title={title} />
     </>
   )
