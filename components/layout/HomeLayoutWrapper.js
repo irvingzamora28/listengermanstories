@@ -24,10 +24,8 @@ const HomeLayoutWrapper = ({ children }) => {
   return (
     <SectionContainer>
       <div className="relative">
-        {/* Added relative positioning here */}
         <div className="absolute z-10 w-full">
-          {/* Added absolute positioning and z-index for header */}
-          <header className="flex items-center justify-between bg-black bg-opacity-30 p-4 shadow-2xl">
+          <header className="flex items-center justify-between">
             <div>
               <Link href="/" aria-label={siteMetadata.headerTitle}>
                 <div className="flex items-center justify-between">
@@ -40,7 +38,7 @@ const HomeLayoutWrapper = ({ children }) => {
             <div className="flex items-center text-base leading-5">
               <div className="hidden sm:block">
                 {headerNavLinks.map((link) => (
-                  <Link key={link.title} href={link.href} className="p-1 text-xl font-medium text-slate-200 dark:text-gray-100 sm:p-4">
+                  <Link key={link.title} href={link.href} className="text-shadow p-1 text-xl font-medium text-white sm:p-4">
                     {link.title}
                   </Link>
                 ))}
@@ -51,19 +49,18 @@ const HomeLayoutWrapper = ({ children }) => {
           </header>
         </div>
         <div className="relative z-0">
-          {/* Hero section with lower z-index */}
           <div className="relative h-[400px] w-full overflow-hidden">
             <div ref={parallaxRef} className="absolute inset-0 h-[150%]">
               <Image className="object-cover" src="/static/images/hero-image.png" layout="fill" objectFit="cover" quality={100} alt="Hero Background" />
+              <div className="absolute inset-0 bg-black opacity-20 dark:opacity-80"></div>
               <div className="absolute inset-0 flex items-center justify-center text-center text-6xl font-bold text-white">
                 <span className="">
-                  <span className="text-shadow-sm text-3xl md:text-5xl">Listen German Stories</span>
+                  <span className="text-shadow-lg text-3xl dark:text-slate-300 md:text-5xl">Listen German Stories</span>
                 </span>
               </div>
             </div>
           </div>
           <div className="relative">
-            {/* Restored relative positioning for rest of the content */}
             <main className="mb-auto">{children}</main>
             <Footer />
           </div>
