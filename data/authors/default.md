@@ -1,16 +1,14 @@
 ---
-name: Tails Azimuth
+name: Max Müller
 avatar: /static/images/avatar.png
-occupation: Professor of Atmospheric Science
-company: Stanford University
+occupation: Software Engineer
+company: SAP
 email: address@yoursite.com
 twitter: https://twitter.com/Twitter
 linkedin: https://www.linkedin.com
 github: https://github.com
 ---
 
-Tails Azimuth is a professor of atmospheric sciences at the Stanford AI Lab. His research interests includes complexity modelling of tailwinds, headwinds and crosswinds.
+Max Müller is an energetic and dynamic individual hailing from the vibrant city of Berlin, Germany. Known for his love of physical activities and storytelling, Max embodies a unique blend of athleticism and creativity that sets him apart from the crowd.
 
-He leads the clean energy group which develops 3D air pollution-climate models, writes differential equation solvers, and manufactures titanium plated air ballons. In his free time he bakes raspberry pi.
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique placerat feugiat ac, facilisis vitae arcu. Proin eget egestas augue. Praesent ut sem nec arcu pellentesque aliquet. Duis dapibus diam vel metus tempus vulputate.
+His weekends are often spent on challenging cycling expeditions, navigating the rolling hills and picturesque countryside surrounding Berlin. Max has a knack for writing compelling, nuanced stories in his native German language. His tales, often inspired by his cycling adventures and the people he meets along the way, are imbued with a unique sense of authenticity that captivates his readers.
