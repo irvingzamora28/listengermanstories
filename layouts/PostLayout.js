@@ -8,7 +8,7 @@ import siteMetadata from '@/data/siteMetadata'
 import Comments from '@/components/comments'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 
-const editUrl = (fileName) => `${siteMetadata.siteRepo}/blob/master/data/blog/${fileName}`
+const editUrl = (fileName) => `${siteMetadata.siteRepo}/blob/master/data/story/${fileName}`
 
 const postDateTemplate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
 
@@ -17,7 +17,7 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
 
   return (
     <SectionContainer>
-      <BlogSEO url={`${siteMetadata.siteUrl}/blog/${slug}`} authorDetails={authorDetails} {...frontMatter} />
+      <BlogSEO url={`${siteMetadata.siteUrl}/story/${slug}`} authorDetails={authorDetails} {...frontMatter} />
       <ScrollTopAndComment />
       <article>
         <div className="xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700">
@@ -73,17 +73,17 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
                   <div className="flex justify-between py-4 xl:block xl:space-y-8 xl:py-8">
                     {prev && (
                       <div>
-                        <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Previous Article</h2>
+                        <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Previous Story</h2>
                         <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
-                          <Link href={`/blog/${prev.slug}`}>{prev.title}</Link>
+                          <Link href={`/story/${prev.slug}`}>{prev.title}</Link>
                         </div>
                       </div>
                     )}
                     {next && (
                       <div>
-                        <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Next Article</h2>
+                        <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Next Story</h2>
                         <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
-                          <Link href={`/blog/${next.slug}`}>{next.title}</Link>
+                          <Link href={`/story/${next.slug}`}>{next.title}</Link>
                         </div>
                       </div>
                     )}
@@ -91,8 +91,8 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
                 )}
               </div>
               <div className="pt-4 xl:pt-8">
-                <Link href="/blog" className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
-                  &larr; Back to the blog
+                <Link href="/story" className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
+                  &larr; Back to stories
                 </Link>
               </div>
             </footer>

@@ -15,10 +15,10 @@ const MAX_LATEST = 5
 const MAX_TAGS = 5
 
 export async function getStaticProps() {
-  const posts = await getFilesFrontMatter('blog')
+  const posts = await getFilesFrontMatter('stories')
   const popular = await sortPostsByPopularity(posts.slice(0, MAX_DISPLAY))
   const latest = await sortPostsByDate(posts)
-  const tags = await getAllTags('blog')
+  const tags = await getAllTags('stories')
   const sortedTags = Object.keys(tags).sort((a, b) => tags[b] - tags[a])
 
   console.log(popular)
@@ -73,7 +73,7 @@ export default function Home({ popular, latest, sortedTags }) {
                             {formatDate(date)}
                           </time>
                         </p>
-                        <Link href={`/blog/${slug}`}>
+                        <Link href={`/story/${slug}`}>
                           <h3 className="text-xl font-medium text-gray-900">{title}</h3>
                         </Link>
                         <p className="mt-1 text-gray-500">{summary}</p>
@@ -83,7 +83,7 @@ export default function Home({ popular, latest, sortedTags }) {
                           ))}
                         </div>
                         <div className="mt-4 flex justify-end gap-2">
-                          <Link href={`/blog/${slug}`} className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400" aria-label={`Read "${title}"`}>
+                          <Link href={`/story/${slug}`} className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400" aria-label={`Read "${title}"`}>
                             Leer más &rarr;
                           </Link>
                         </div>
@@ -103,11 +103,11 @@ export default function Home({ popular, latest, sortedTags }) {
                       <li key={slug} className={`mb-4 text-gray-900 ${index < MAX_DISPLAY - 1 ? 'border-b border-gray-300 pb-4' : ''}`}>
                         <div className="flex flex-col">
                           <div>
-                            <Link href={`/blog/${slug}`}>{title}</Link>
+                            <Link href={`/story/${slug}`}>{title}</Link>
                             <span className="block text-sm text-gray-500">Published on {formatDate(date)}</span>
                           </div>
                           <div>
-                            <Link href={`/blog/${slug}`} className="float-right ml-4 mt-2 rounded bg-primary-500 px-3 py-1 text-sm font-semibold leading-none text-white transition-colors duration-200 hover:bg-primary-600">
+                            <Link href={`/story/${slug}`} className="float-right ml-4 mt-2 rounded bg-primary-500 px-3 py-1 text-sm font-semibold leading-none text-white transition-colors duration-200 hover:bg-primary-600">
                               Leer más
                             </Link>
                           </div>
@@ -122,7 +122,7 @@ export default function Home({ popular, latest, sortedTags }) {
         </div>
         {popular.length > MAX_DISPLAY && (
           <div className="flex justify-end text-base font-medium leading-6">
-            <Link href="/blog" className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400" aria-label="Todas las historias">
+            <Link href="/story" className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400" aria-label="Todas las historias">
               Todas las historias &rarr;
             </Link>
           </div>
