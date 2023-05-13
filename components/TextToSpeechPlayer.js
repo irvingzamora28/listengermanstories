@@ -29,6 +29,7 @@ const TextToSpeechPlayer = ({ text }) => {
     if (selectedVoice) {
       utterance.voice = selectedVoice
     }
+    window.speechSynthesis.cancel()
 
     window.speechSynthesis.speak(utterance)
   }
@@ -72,7 +73,8 @@ const TextToSpeechPlayer = ({ text }) => {
       <p>
         {sentences.map((sentence, index) => (
           <span key={index} className={`${index === currentSentence ? 'bg-primary-200' : ''}`}>
-            {sentence}{' '}
+            {sentence}
+            {'. '}
           </span>
         ))}
       </p>
