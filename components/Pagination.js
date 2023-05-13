@@ -13,7 +13,7 @@ export default function Pagination({ totalPages, currentPage }) {
           </button>
         )}
         {prevPage && (
-          <Link href={currentPage - 1 === 1 ? `/story/` : `/story/page/${currentPage - 1}`}>
+          <Link href={currentPage - 1 === 1 ? `/stories/` : `/story/page/${currentPage - 1}`}>
             <button rel="previous">Previous</button>
           </Link>
         )}
