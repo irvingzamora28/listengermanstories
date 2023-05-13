@@ -53,7 +53,7 @@ export default function Home({ popular, latest, sortedTags }) {
               </div>
             </div>
             <div className="flex-grow text-right md:w-auto">
-              <button className="rounded bg-primary-500 px-4 py-2 font-bold text-white hover:bg-primary-700">Suscribirse</button>
+              <button className="rounded bg-primary-500 px-4 py-2 font-bold text-white hover:bg-primary-700">Subscribe</button>
             </div>
           </div>
 
@@ -65,7 +65,13 @@ export default function Home({ popular, latest, sortedTags }) {
                 return (
                   <article key={slug} className="mb-4 w-full px-4 md:w-1/3">
                     <div className="mx-auto max-w-md overflow-hidden rounded-lg bg-white shadow">
-                      {images && images.length > 0 && <Image src={images[0]} className="aspect-video w-full object-cover" width={600} height={400} alt="" />}
+                      {images && images.length > 0 && (
+                        <>
+                          <Link href={`/story/${slug}`}>
+                            <Image src={images[0]} className="aspect-video w-full object-cover" width={600} height={400} alt="" />
+                          </Link>
+                        </>
+                      )}
                       <div className="p-4">
                         <p className="mb-1 text-sm text-primary-500">
                           Max Müller
@@ -84,7 +90,7 @@ export default function Home({ popular, latest, sortedTags }) {
                         </div>
                         <div className="mt-4 flex justify-end gap-2">
                           <Link href={`/story/${slug}`} className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400" aria-label={`Read "${title}"`}>
-                            Leer más &rarr;
+                            Read more &rarr;
                           </Link>
                         </div>
                       </div>
@@ -107,8 +113,8 @@ export default function Home({ popular, latest, sortedTags }) {
                             <span className="block text-sm text-gray-500">Published on {formatDate(date)}</span>
                           </div>
                           <div>
-                            <Link href={`/story/${slug}`} className="float-right ml-4 mt-2 rounded bg-primary-500 px-3 py-1 text-sm font-semibold leading-none text-white transition-colors duration-200 hover:bg-primary-600">
-                              Leer más
+                            <Link href={`/story/${slug}`} className="float-right ml-4 mt-2 rounded bg-primary-500 px-3 py-2 text-sm font-semibold leading-none text-white transition-colors duration-200 hover:bg-primary-600">
+                              Read more
                             </Link>
                           </div>
                         </div>
