@@ -1,92 +1,93 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FiPauseCircle, FiPlayCircle, FiRepeat, FiRewind } from 'react-icons/fi'
 
 const TextToSpeechPlayer = ({ text }) => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
   const [isRepeating, setIsRepeating] = useState(false)
-  const [isRestarting, setIsRestarting] = useState(false)
-  const [utteranceQueue, setUtteranceQueue] = useState([])
+  const [currentSentence, setCurrentSentence] = useState(-1)
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const utterances = []
-      const regex = /.{1,100}(,|\.|$)|.{1,100}/g
-      const chunks = text.match(regex)
-      console.log(chunks)
-      chunks.forEach((chunk) => {
-        const utterance = new SpeechSynthesisUtterance(chunk)
-        utterance.lang = 'de-DE'
-        const voices = window.speechSynthesis.getVoices()
-        const selectedVoice = voices.find((voice) => voice.lang === 'de-DE')
-        if (selectedVoice) {
-          utterance.voice = selectedVoice
-        }
-        utterances.push(utterance)
-      })
+  const sentences = text.split('. ')
 
-      setUtteranceQueue(utterances)
+  const handlePlay = (index) => {
+    const utterance = new SpeechSynthesisUtterance(sentences[index])
+    utterance.lang = 'de-DE'
+    utterance.onstart = () => {
+      setCurrentSentence(index)
+      setIsPlaying(true)
     }
-  }, [text])
-
-  const speakNextChunk = () => {
-    window.speechSynthesis.cancel()
-    console.log(`length: ${utteranceQueue.length}`)
-    if (utteranceQueue.length === 0) {
+    utterance.onend = () => {
       setIsPlaying(false)
-      setIsPaused(false)
-      return
+      setCurrentSentence(-1)
+      if (isRepeating || index < sentences.length - 1) {
+        handlePlay(isRepeating ? index : index + 1)
+      }
     }
 
-    const utterance = utteranceQueue.shift()
-    utterance.rate = 0.8
-    utterance.pitch = 1
+    const voices = window.speechSynthesis.getVoices()
+    const selectedVoice = voices.find((voice) => voice.lang === 'de-DE')
+    if (selectedVoice) {
+      utterance.voice = selectedVoice
+    }
 
-    utterance.onend = speakNextChunk
-    console.log(`play`, utterance)
     window.speechSynthesis.speak(utterance)
+  }
+
+  const handlePause = () => {
+    window.speechSynthesis.pause()
+    setIsPaused(true)
+    setIsPlaying(false)
+  }
+
+  const handleResume = () => {
+    window.speechSynthesis.resume()
+    setIsPaused(false)
+    setIsPlaying(true)
   }
 
   const handlePlayPause = () => {
     if (!isPlaying && !isPaused) {
-      setIsPlaying(true)
-      speakNextChunk()
+      handlePlay(currentSentence)
     } else if (isPaused) {
-      setIsPaused(false)
-      window.speechSynthesis.resume()
+      handleResume()
     } else {
-      setIsPaused(true)
-      window.speechSynthesis.pause()
+      handlePause()
     }
+  }
+
+  const handleRepeat = () => {
+    setIsRepeating(!isRepeating)
   }
 
   const handleRestart = () => {
     window.speechSynthesis.cancel()
+    setCurrentSentence(0)
     setIsPlaying(false)
     setIsPaused(false)
-    setUtteranceQueue([])
-    setIsRestarting(true)
+    handlePlay(0)
   }
 
-  useEffect(() => {
-    if ((isRepeating || isRestarting) && !isPlaying && !isPaused) {
-      handlePlayPause()
-      if (isRestarting) setIsRestarting(false)
-    }
-  }, [isPlaying, isPaused, isRepeating, isRestarting])
-
   return (
-    <div className="flex items-center justify-center space-x-4 rounded-lg bg-green-200 p-4 shadow-lg hover:shadow-xl">
-      <button onClick={handleRestart} className="rounded-full p-2 hover:bg-green-300 hover:text-white">
-        <FiRewind size={24} />
-      </button>
-      <button onClick={handlePlayPause} className="rounded-full p-2 hover:bg-green-300 hover:text-white">
-        {isPlaying ? <FiPauseCircle size={24} /> : <FiPlayCircle size={24} />}
-      </button>
-      <button onClick={() => setIsRepeating(!isRepeating)} className="rounded-full p-2 hover:bg-green-300 hover:text-white">
-        <FiRepeat size={24} className={` ${isRepeating && 'rounded-full text-green-600 hover:text-white'}`} />
-      </button>
-    </div>
+    <>
+      <p>
+        {sentences.map((sentence, index) => (
+          <span key={index} className={`${index === currentSentence ? 'bg-primary-200' : ''}`}>
+            {sentence}{' '}
+          </span>
+        ))}
+      </p>
+      <div className="flex items-center justify-center space-x-4 rounded-lg bg-primary-200 p-4 shadow-lg hover:shadow-xl">
+        <button onClick={handleRestart} className="rounded-full p-2 hover:bg-primary-300 hover:text-white">
+          <FiRewind size={24} />
+        </button>
+        <button onClick={handlePlayPause} className="rounded-full p-2 hover:bg-primary-300 hover:text-white">
+          {isPlaying ? <FiPauseCircle size={24} /> : <FiPlayCircle size={24} />}
+        </button>
+        <button onClick={handleRepeat} className="rounded-full p-2 hover:bg-primary-300 hover:text-white">
+          <FiRepeat size={24} className={` ${isRepeating ? 'rounded-full text-primary-600 hover:text-white' : ''}`} />
+        </button>
+      </div>
+    </>
   )
 }
 
