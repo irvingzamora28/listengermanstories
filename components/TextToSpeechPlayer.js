@@ -7,7 +7,8 @@ const TextToSpeechPlayer = ({ text }) => {
   const [isRepeating, setIsRepeating] = useState(false)
   const [currentSentence, setCurrentSentence] = useState(-1)
 
-  const sentences = text.split('. ')
+  const sentencesHTML = text.split('. ')
+  const sentences = text.replace(/\*\*/g, '').split('. ')
 
   const handlePlay = (index) => {
     const utterance = new SpeechSynthesisUtterance(sentences[index])
@@ -71,13 +72,12 @@ const TextToSpeechPlayer = ({ text }) => {
   return (
     <>
       <p>
-        {sentences.map((sentence, index) => (
-          <span key={index} className={`${index === currentSentence ? 'bg-primary-200' : ''}`}>
-            {sentence}
-            {'. '}
-          </span>
-        ))}
+        {sentencesHTML.map((sentence, index) => {
+          const parsedSentence = sentence.replace(/\*\*(.*?)\*\*/g, '<code>$1</code>')
+          return <span key={index} className={`${index === currentSentence ? 'bg-primary-200' : ''}`} dangerouslySetInnerHTML={{ __html: parsedSentence + '. ' }}></span>
+        })}
       </p>
+
       <div className="flex items-center justify-center space-x-4 rounded-lg bg-primary-200 p-4 shadow-lg hover:shadow-xl">
         <button onClick={handleRestart} className="rounded-full p-2 hover:bg-primary-300 hover:text-white">
           <FiRewind size={24} />
