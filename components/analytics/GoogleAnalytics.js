@@ -5,10 +5,7 @@ import siteMetadata from '@/data/siteMetadata'
 const GAScript = () => {
   return (
     <>
-      <Script
-        strategy="lazyOnload"
-        src={`https://www.googletagmanager.com/gtag/js?id=${siteMetadata.analytics.googleAnalyticsId}`}
-      />
+      <Script strategy="lazyOnload" src={`https://www.googletagmanager.com/gtag/js?id=${siteMetadata.analytics.googleAnalyticsId}`} />
 
       <Script strategy="lazyOnload" id="ga-script">
         {`

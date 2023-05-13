@@ -5,11 +5,7 @@ import siteMetadata from '@/data/siteMetadata'
 const PlausibleScript = () => {
   return (
     <>
-      <Script
-        strategy="lazyOnload"
-        data-domain={siteMetadata.analytics.plausibleDataDomain}
-        src="https://plausible.io/js/plausible.js"
-      />
+      <Script strategy="lazyOnload" data-domain={siteMetadata.analytics.plausibleDataDomain} src="https://plausible.io/js/plausible.js" />
       <Script strategy="lazyOnload" id="plausible-script">
         {`
             window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }

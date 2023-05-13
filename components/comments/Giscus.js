@@ -7,28 +7,14 @@ const Giscus = () => {
   const [enableLoadComments, setEnabledLoadComments] = useState(true)
   const { theme, resolvedTheme } = useTheme()
   const commentsTheme =
-    siteMetadata.comment.giscusConfig.themeURL === ''
-      ? theme === 'dark' || resolvedTheme === 'dark'
-        ? siteMetadata.comment.giscusConfig.darkTheme
-        : siteMetadata.comment.giscusConfig.theme
-      : siteMetadata.comment.giscusConfig.themeURL
+    siteMetadata.comment.giscusConfig.themeURL === '' ? (theme === 'dark' || resolvedTheme === 'dark' ? siteMetadata.comment.giscusConfig.darkTheme : siteMetadata.comment.giscusConfig.theme) : siteMetadata.comment.giscusConfig.themeURL
 
   const COMMENTS_ID = 'comments-container'
 
   const LoadComments = useCallback(() => {
     setEnabledLoadComments(false)
 
-    const {
-      repo,
-      repositoryId,
-      category,
-      categoryId,
-      mapping,
-      reactions,
-      metadata,
-      inputPosition,
-      lang,
-    } = siteMetadata?.comment?.giscusConfig
+    const { repo, repositoryId, category, categoryId, mapping, reactions, metadata, inputPosition, lang } = siteMetadata?.comment?.giscusConfig
 
     const script = document.createElement('script')
     script.src = 'https://giscus.app/client.js'
@@ -62,7 +48,7 @@ const Giscus = () => {
   }, [LoadComments])
 
   return (
-    <div className="pt-6 pb-6 text-center text-gray-700 dark:text-gray-300">
+    <div className="pb-6 pt-6 text-center text-gray-700 dark:text-gray-300">
       {enableLoadComments && <button onClick={LoadComments}>Load Comments</button>}
       <div className="giscus" id={COMMENTS_ID} />
     </div>
