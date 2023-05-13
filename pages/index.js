@@ -101,7 +101,7 @@ export default function Home({ popular, latest, sortedTags }) {
             </div>
             <div className="container__latest-posts ml-2 w-full px-4 md:w-1/5">
               <div className="mb-4">
-                <h2 className="mb-2 text-lg font-medium text-gray-800">Historias recientes</h2>
+                <h2 className="mb-2 text-lg font-medium text-gray-800">Recent stories</h2>
                 <ul>
                   {latest.slice(0, MAX_LATEST).map((frontMatter, index) => {
                     const { slug, date, title, summary, tags } = frontMatter
@@ -128,8 +128,8 @@ export default function Home({ popular, latest, sortedTags }) {
         </div>
         {popular.length > MAX_DISPLAY && (
           <div className="flex justify-end text-base font-medium leading-6">
-            <Link href="/story" className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400" aria-label="Todas las historias">
-              Todas las historias &rarr;
+            <Link href="/story" className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400" aria-label="All stories">
+              All stories &rarr;
             </Link>
           </div>
         )}
