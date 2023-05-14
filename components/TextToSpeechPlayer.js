@@ -74,7 +74,7 @@ const TextToSpeechPlayer = ({ text }) => {
       <p>
         {sentencesHTML.map((sentence, index) => {
           const parsedSentence = sentence.replace(/\*\*(.*?)\*\*/g, '<code>$1</code>')
-          return <span key={index} className={`${index === currentSentence ? 'bg-primary-200' : ''}`} dangerouslySetInnerHTML={{ __html: parsedSentence + '. ' }}></span>
+          return <span key={index} className={`${index === currentSentence ? 'bg-primary-200' : ''}`} dangerouslySetInnerHTML={{ __html: parsedSentence + ' ' }}></span>
         })}
       </p>
 
