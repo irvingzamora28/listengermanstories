@@ -1,6 +1,6 @@
 const siteMetadata = {
   title: 'Listen German Stories: Explore, Read, and Listen to Captivating Stories in German',
-  author: 'Irving Zamora',
+  author: 'Max Müller',
   headerTitle: 'Listen German Stories',
   description: 'Improve your German reading and listening skills with engaging stories brought to life through audio.',
   language: 'en-us',
