@@ -125,7 +125,7 @@ export default function Home({ popular, latest, sortedTags }) {
         </div>
         {popular.length > MAX_DISPLAY && (
           <div className="flex justify-end text-base font-medium leading-6">
-            <Link href="/story" className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400" aria-label="All stories">
+            <Link href="/stories" className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400" aria-label="All stories">
               All stories &rarr;
             </Link>
           </div>

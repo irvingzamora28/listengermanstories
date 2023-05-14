@@ -91,7 +91,7 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
                 )}
               </div>
               <div className="pt-4 xl:pt-8">
-                <Link href="/story" className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
+                <Link href="/stories" className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
                   &larr; Back to stories
                 </Link>
               </div>
