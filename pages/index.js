@@ -52,9 +52,6 @@ export default function Home({ popular, latest, sortedTags }) {
                 })}
               </div>
             </div>
-            <div className="flex-grow text-right md:w-auto">
-              <button className="rounded bg-primary-500 px-4 py-2 font-bold text-white hover:bg-primary-700">Subscribe</button>
-            </div>
           </div>
 
           <div className="flex flex-1 flex-col md:flex-row">
