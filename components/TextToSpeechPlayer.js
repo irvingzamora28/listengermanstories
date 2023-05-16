@@ -74,11 +74,11 @@ const TextToSpeechPlayer = ({ text }) => {
       <p>
         {sentencesHTML.map((sentence, index) => {
           const parsedSentence = sentence.replace(/\*\*(.*?)\*\*/g, '<code>$1</code>')
-          return <span key={index} className={`${index === currentSentence ? 'bg-primary-200' : ''}`} dangerouslySetInnerHTML={{ __html: parsedSentence + ' ' }}></span>
+          return <span key={index} className={`${index === currentSentence ? 'bg-primary-200 dark:bg-primary-800' : ''}`} dangerouslySetInnerHTML={{ __html: parsedSentence + ' ' }}></span>
         })}
       </p>
 
-      <div className="flex items-center justify-center space-x-4 rounded-lg bg-primary-200 p-4 shadow-lg hover:shadow-xl">
+      <div className="flex items-center justify-center space-x-4 rounded-lg bg-primary-200 p-4 shadow-lg hover:shadow-xl dark:bg-primary-800">
         <button onClick={handleRestart} className="rounded-full p-2 hover:bg-primary-300 hover:text-white">
           <FiRewind size={24} />
         </button>
