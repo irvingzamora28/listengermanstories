@@ -61,7 +61,7 @@ export default function Home({ popular, latest, sortedTags }) {
                 const { slug, date, title, summary, tags, popularity, images, authors } = frontMatter
                 return (
                   <article key={slug} className="mb-4 w-full px-4 md:w-1/3">
-                    <div className="mx-auto max-w-md overflow-hidden rounded-lg bg-white shadow">
+                    <div className="mx-auto max-w-md overflow-hidden rounded-lg bg-white shadow dark:bg-slate-800">
                       {images && images.length > 0 && (
                         <>
                           <Link href={`/story/${slug}`}>
@@ -77,9 +77,9 @@ export default function Home({ popular, latest, sortedTags }) {
                           </time>
                         </p>
                         <Link href={`/story/${slug}`}>
-                          <h3 className="text-xl font-medium text-gray-900">{title}</h3>
+                          <h3 className="text-xl font-medium text-gray-900 dark:text-gray-400">{title}</h3>
                         </Link>
-                        <p className="mt-1 text-gray-500">{summary}</p>
+                        <p className="mt-1 text-gray-500 dark:text-gray-200">{summary}</p>
                         <div className="mt-4 flex flex-wrap gap-2">
                           {tags.map((tag) => (
                             <Tag key={tag} text={tag} />
