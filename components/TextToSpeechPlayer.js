@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { FiPauseCircle, FiPlayCircle, FiRepeat, FiRewind } from 'react-icons/fi'
 
-const TextToSpeechPlayer = ({ text }) => {
+const TextToSpeechPlayer = ({ text, translation = '' }) => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
   const [isRepeating, setIsRepeating] = useState(false)
   const [currentSentence, setCurrentSentence] = useState(-1)
+  const [showTranslation, setShowTranslation] = useState(false)
 
   const sentencesHTML = text.split('. ')
   const sentences = text.replace(/\*\*/g, '').split('. ')
+  const parsedTranslation = translation.replace(/\*\*(.*?)\*\*/g, '<code>$1</code>')
+
+  const toggleTranslation = () => {
+    setShowTranslation(!showTranslation)
+  }
 
   const handlePlay = (index) => {
     const utterance = new SpeechSynthesisUtterance(sentences[index])
@@ -74,9 +80,14 @@ const TextToSpeechPlayer = ({ text }) => {
       <p>
         {sentencesHTML.map((sentence, index) => {
           const parsedSentence = sentence.replace(/\*\*(.*?)\*\*/g, '<code>$1</code>')
-          return <span key={index} className={`${index === currentSentence ? 'bg-primary-200 dark:bg-primary-800' : ''}`} dangerouslySetInnerHTML={{ __html: parsedSentence + ' ' }}></span>
+          return <span key={index} className={`${index === currentSentence ? 'bg-primary-200 dark:bg-primary-800' : ''}`} dangerouslySetInnerHTML={{ __html: parsedSentence + '. ' }}></span>
         })}
+        {showTranslation && <p className="text-md mt-4 rounded-md bg-gray-100 p-2 italic" dangerouslySetInnerHTML={{ __html: parsedTranslation }} />}
       </p>
+
+      <button onClick={toggleTranslation} className="my-4 rounded bg-primary-500 px-4 py-2 text-white hover:bg-primary-600">
+        Toggle Translation
+      </button>
 
       <div className="flex items-center justify-center space-x-4 rounded-lg bg-primary-200 p-4 shadow-lg hover:shadow-xl dark:bg-primary-800">
         <button onClick={handleRestart} className="rounded-full p-2 hover:bg-primary-300 hover:text-white">
