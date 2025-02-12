@@ -29,17 +29,13 @@ const TextToSpeechPlayer = ({ text, translation = '', mp3File }) => {
   useEffect(() => {
     // Initialize audio element when mp3File changes and we're in the browser
     if (typeof window !== 'undefined' && mp3File) {
-      console.log('Initializing audio with file:', mp3File)
       const audio = new Audio()
       audio.preload = 'auto'
 
       // Add loading event listeners for debugging
-      audio.addEventListener('loadstart', () => console.log('Audio loading started'))
       audio.addEventListener('loadeddata', () => {
-        console.log('Audio data loaded')
         setAudioDuration(audio.duration)
       })
-      audio.addEventListener('canplay', () => console.log('Audio can play'))
       audio.addEventListener('error', (e) => console.error('Audio loading error:', audio.error))
 
       // Set up event listeners for playback state
@@ -54,11 +50,6 @@ const TextToSpeechPlayer = ({ text, translation = '', mp3File }) => {
       audio.onended = () => {
         setIsPlaying(false)
         setCurrentSentence(-1)
-        if (isRepeating) {
-          audio.currentTime = 0
-          setCurrentSentence(0)
-          audio.play()
-        }
       }
 
       // Add timeupdate listener to update current sentence
@@ -70,7 +61,6 @@ const TextToSpeechPlayer = ({ text, translation = '', mp3File }) => {
 
           // Only update if we have a valid sentence index and it's different from current
           if (sentenceIndex >= 0 && sentenceIndex < sentences.length && sentenceIndex !== currentSentence) {
-            console.log('Updating current sentence to:', sentenceIndex)
             setCurrentSentence(sentenceIndex)
           }
         }
@@ -81,7 +71,7 @@ const TextToSpeechPlayer = ({ text, translation = '', mp3File }) => {
       audio.playbackRate = playbackSpeed
       setAudioElement(audio)
 
-      // Set up event listeners
+      // Set up error event listener
       audio.onerror = (err) => {
         console.error('Audio error:', {
           code: audio.error?.code,
@@ -90,25 +80,6 @@ const TextToSpeechPlayer = ({ text, translation = '', mp3File }) => {
           readyState: audio.readyState,
         })
         setIsPlaying(false)
-      }
-
-      audio.onplay = () => {
-        setIsPlaying(true)
-        setCurrentSentence(0)
-      }
-
-      audio.onpause = () => {
-        setIsPlaying(false)
-        setIsPaused(true)
-      }
-
-      audio.onended = () => {
-        setIsPlaying(false)
-        setIsPaused(false)
-        if (isRepeating) {
-          audio.currentTime = 0
-          audio.play()
-        }
       }
     }
 
@@ -121,7 +92,30 @@ const TextToSpeechPlayer = ({ text, translation = '', mp3File }) => {
         setAudioElement(null)
       }
     }
-  }, [mp3File, isRepeating])
+  }, [mp3File])
+
+  // Update audio event handlers when repeat state changes
+  useEffect(() => {
+    if (audioElement) {
+      audioElement.onended = async () => {
+        if (isRepeating) {
+          audioElement.currentTime = 0
+          setCurrentSentence(0)
+          try {
+            await audioElement.play()
+            setIsPlaying(true)
+          } catch (error) {
+            console.error('[onended] Error replaying audio:', error)
+            setIsPlaying(false)
+            setCurrentSentence(-1)
+          }
+        } else {
+          setIsPlaying(false)
+          setCurrentSentence(-1)
+        }
+      }
+    }
+  }, [isRepeating, audioElement])
 
   const toggleTranslation = () => {
     setShowTranslation(!showTranslation)
@@ -130,8 +124,6 @@ const TextToSpeechPlayer = ({ text, translation = '', mp3File }) => {
   const handlePlay = (index) => {
     if (mp3File && audioElement) {
       try {
-        console.log('Attempting to play audio:', mp3File)
-
         if (typeof index === 'number' && index >= 0 && index < sentences.length) {
           // Calculate the time to jump to based on sentence index
           const progress = index / sentences.length
@@ -146,7 +138,6 @@ const TextToSpeechPlayer = ({ text, translation = '', mp3File }) => {
         audioElement
           .play()
           .then(() => {
-            console.log('Audio playback started successfully')
             setIsPlaying(true)
           })
           .catch((error) => {
@@ -227,7 +218,8 @@ const TextToSpeechPlayer = ({ text, translation = '', mp3File }) => {
   }
 
   const handleRepeat = () => {
-    setIsRepeating(!isRepeating)
+    const newRepeatState = !isRepeating
+    setIsRepeating(newRepeatState)
   }
 
   const handleRestart = () => {
