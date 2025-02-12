@@ -1,54 +1,186 @@
 import React, { useState, useEffect } from 'react'
 import { FiPauseCircle, FiPlayCircle, FiRepeat, FiRewind } from 'react-icons/fi'
 
-const TextToSpeechPlayer = ({ text, translation = '' }) => {
+const TextToSpeechPlayer = ({ text, translation = '', mp3File }) => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
   const [isRepeating, setIsRepeating] = useState(false)
   const [currentSentence, setCurrentSentence] = useState(-1)
   const [showTranslation, setShowTranslation] = useState(false)
+  const [audioElement, setAudioElement] = useState(null)
 
   const sentencesHTML = text.split('. ')
   const sentences = text.replace(/\*\*/g, '').split('. ')
   const parsedTranslation = translation.replace(/\*\*(.*?)\*\*/g, '<code>$1</code>')
+
+  const [sentenceTimes, setSentenceTimes] = useState([])
+  const [audioDuration, setAudioDuration] = useState(0)
+
+  useEffect(() => {
+    // Initialize audio element when mp3File changes and we're in the browser
+    if (typeof window !== 'undefined' && mp3File) {
+      console.log('Initializing audio with file:', mp3File)
+      const audio = new Audio()
+      audio.preload = 'auto'
+
+      // Add loading event listeners for debugging
+      audio.addEventListener('loadstart', () => console.log('Audio loading started'))
+      audio.addEventListener('loadeddata', () => {
+        console.log('Audio data loaded')
+        setAudioDuration(audio.duration)
+      })
+      audio.addEventListener('canplay', () => console.log('Audio can play'))
+      audio.addEventListener('error', (e) => console.error('Audio loading error:', audio.error))
+
+      // Set up event listeners for playback state
+      audio.onplay = () => {
+        setIsPlaying(true)
+      }
+
+      audio.onpause = () => {
+        setIsPlaying(false)
+      }
+
+      audio.onended = () => {
+        setIsPlaying(false)
+        setCurrentSentence(-1)
+        if (isRepeating) {
+          audio.currentTime = 0
+          audio.play()
+        }
+      }
+
+      // Add timeupdate listener to update current sentence
+      audio.addEventListener('timeupdate', () => {
+        if (audio.duration) {
+          const progress = audio.currentTime / audio.duration
+          const sentenceIndex = Math.floor(progress * sentences.length)
+          if (sentenceIndex !== currentSentence) {
+            setCurrentSentence(sentenceIndex)
+          }
+        }
+      })
+
+      // Set the source after adding event listeners
+      audio.src = mp3File
+      setAudioElement(audio)
+
+      // Set up event listeners
+      audio.onerror = (err) => {
+        console.error('Audio error:', {
+          code: audio.error?.code,
+          message: audio.error?.message,
+          networkState: audio.networkState,
+          readyState: audio.readyState,
+        })
+        setIsPlaying(false)
+      }
+
+      audio.onplay = () => {
+        setIsPlaying(true)
+        setCurrentSentence(0)
+      }
+
+      audio.onpause = () => {
+        setIsPlaying(false)
+        setIsPaused(true)
+      }
+
+      audio.onended = () => {
+        setIsPlaying(false)
+        setIsPaused(false)
+        if (isRepeating) {
+          audio.currentTime = 0
+          audio.play()
+        }
+      }
+    }
+
+    // Cleanup function
+    return () => {
+      if (audioElement) {
+        audioElement.pause()
+        audioElement.src = ''
+        audioElement.load()
+        setAudioElement(null)
+      }
+    }
+  }, [mp3File, isRepeating])
 
   const toggleTranslation = () => {
     setShowTranslation(!showTranslation)
   }
 
   const handlePlay = (index) => {
-    const utterance = new SpeechSynthesisUtterance(sentences[index])
-    utterance.lang = 'de-DE'
-    utterance.onstart = () => {
-      setCurrentSentence(index)
-      setIsPlaying(true)
-    }
-    utterance.onend = () => {
-      setIsPlaying(false)
-      setCurrentSentence(-1)
-      if (isRepeating || index < sentences.length - 1) {
-        handlePlay(isRepeating ? index : index + 1)
+    if (mp3File && audioElement) {
+      try {
+        console.log('Attempting to play audio:', mp3File)
+        // Set current sentence before playing
+        setCurrentSentence(index || 0)
+
+        if (typeof index === 'number' && index >= 0) {
+          audioElement.currentTime = 0 // Always start from beginning of audio
+        }
+
+        audioElement
+          .play()
+          .then(() => {
+            console.log('Audio playback started successfully')
+            setIsPlaying(true)
+          })
+          .catch((error) => {
+            console.error('Error playing audio:', error)
+            setIsPlaying(false)
+            setCurrentSentence(-1)
+          })
+        setIsPaused(false)
+      } catch (error) {
+        console.error('Unexpected error during play:', error)
+        setCurrentSentence(-1)
       }
-    }
+    } else {
+      const utterance = new SpeechSynthesisUtterance(sentences[index])
+      utterance.lang = 'de-DE'
+      utterance.onstart = () => {
+        setCurrentSentence(index)
+        setIsPlaying(true)
+      }
+      utterance.onend = () => {
+        setIsPlaying(false)
+        setCurrentSentence(-1)
+        if (isRepeating || index < sentences.length - 1) {
+          handlePlay(isRepeating ? index : index + 1)
+        }
+      }
 
-    const voices = window.speechSynthesis.getVoices()
-    const selectedVoice = voices.find((voice) => voice.lang === 'de-DE')
-    if (selectedVoice) {
-      utterance.voice = selectedVoice
-    }
-    window.speechSynthesis.cancel()
+      const voices = window.speechSynthesis.getVoices()
+      const selectedVoice = voices.find((voice) => voice.lang === 'de-DE')
+      if (selectedVoice) {
+        utterance.voice = selectedVoice
+      }
+      window.speechSynthesis.cancel()
 
-    window.speechSynthesis.speak(utterance)
+      window.speechSynthesis.speak(utterance)
+    }
   }
 
   const handlePause = () => {
-    window.speechSynthesis.pause()
+    if (audioElement) {
+      audioElement.pause()
+      setCurrentSentence(-1) // Remove highlighting when paused
+    } else {
+      window.speechSynthesis.pause()
+    }
     setIsPaused(true)
     setIsPlaying(false)
   }
 
   const handleResume = () => {
-    window.speechSynthesis.resume()
+    if (audioElement) {
+      audioElement.play()
+    } else {
+      window.speechSynthesis.resume()
+    }
     setIsPaused(false)
     setIsPlaying(true)
   }
@@ -68,7 +200,13 @@ const TextToSpeechPlayer = ({ text, translation = '' }) => {
   }
 
   const handleRestart = () => {
-    window.speechSynthesis.cancel()
+    if (audioElement) {
+      audioElement.pause()
+      audioElement.removeAttribute('src')
+      audioElement.load()
+    } else {
+      window.speechSynthesis.cancel()
+    }
     setCurrentSentence(0)
     setIsPlaying(false)
     setIsPaused(false)
@@ -78,11 +216,22 @@ const TextToSpeechPlayer = ({ text, translation = '' }) => {
   return (
     <>
       <p>
-        {sentencesHTML.map((sentence, index) => {
+        {sentences.map((sentence, index) => {
           const parsedSentence = sentence.replace(/\*\*(.*?)\*\*/g, '<code>$1</code>')
-          return <span key={index} className={`${index === currentSentence ? 'bg-primary-200 dark:bg-primary-800' : ''}`} dangerouslySetInnerHTML={{ __html: parsedSentence + '. ' }}></span>
+          return (
+            <span
+              key={index}
+              className={`cursor-pointer transition-colors duration-200 ${index === currentSentence ? 'bg-primary-200 dark:bg-primary-800' : 'hover:bg-primary-100 dark:hover:bg-primary-900'}`}
+              onClick={() => {
+                if (mp3File && audioElement) {
+                  handlePlay(index)
+                }
+              }}
+              dangerouslySetInnerHTML={{ __html: parsedSentence + (index < sentences.length - 1 ? '. ' : '') }}
+            />
+          )
         })}
-        {showTranslation && <p className="text-md mt-4 rounded-md bg-gray-100 p-2 italic" dangerouslySetInnerHTML={{ __html: parsedTranslation }} />}
+        {showTranslation && <p className="text-md mt-4 rounded-md bg-gray-100 p-2 italic dark:bg-gray-800" dangerouslySetInnerHTML={{ __html: parsedTranslation }} />}
       </p>
 
       <button onClick={toggleTranslation} className="my-4 rounded bg-primary-500 px-4 py-2 text-white hover:bg-primary-600">

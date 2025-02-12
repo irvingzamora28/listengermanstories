@@ -8,7 +8,7 @@ const ContentSecurityPolicy = `
   script-src 'self' 'unsafe-eval' 'unsafe-inline' giscus.app;
   style-src 'self' 'unsafe-inline';
   img-src * blob: data:;
-  media-src 'none';
+  media-src 'self' *;
   connect-src *;
   font-src 'self';
   frame-src giscus.app
@@ -63,6 +63,15 @@ module.exports = withBundleAnalyzer({
       {
         source: '/(.*)',
         headers: securityHeaders,
+      },
+    ]
+  },
+  // Configure static file serving
+  async rewrites() {
+    return [
+      {
+        source: '/static/:path*',
+        destination: '/:path*',
       },
     ]
   },
