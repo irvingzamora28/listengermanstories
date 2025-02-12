@@ -240,7 +240,7 @@ const TextToSpeechPlayer = ({ text, translation = '', mp3File }) => {
   }
 
   return (
-    <div className="mx-auto max-w-4xl space-y-4 p-2">
+    <div className="max-w-8xl mx-auto space-y-4 p-0">
       {/* Text Content */}
       <p className="text-base leading-relaxed">
         {sentences.map((sentence, index) => {
