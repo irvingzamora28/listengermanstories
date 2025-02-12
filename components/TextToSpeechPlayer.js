@@ -8,6 +8,9 @@ const TextToSpeechPlayer = ({ text, translation = '', mp3File }) => {
   const [currentSentence, setCurrentSentence] = useState(-1)
   const [showTranslation, setShowTranslation] = useState(false)
   const [audioElement, setAudioElement] = useState(null)
+  const [playbackSpeed, setPlaybackSpeed] = useState(1.0)
+
+  const speedOptions = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0]
 
   const sentencesHTML = text.split('. ')
   const sentences = text.replace(/\*\*/g, '').split('. ')
@@ -61,8 +64,9 @@ const TextToSpeechPlayer = ({ text, translation = '', mp3File }) => {
         }
       })
 
-      // Set the source after adding event listeners
+      // Set the source and initial playback rate
       audio.src = mp3File
+      audio.playbackRate = playbackSpeed
       setAudioElement(audio)
 
       // Set up event listeners
@@ -248,6 +252,28 @@ const TextToSpeechPlayer = ({ text, translation = '', mp3File }) => {
         <button onClick={handleRepeat} className="rounded-full p-2 hover:bg-primary-300 hover:text-white">
           <FiRepeat size={24} className={` ${isRepeating ? 'rounded-full text-primary-600 hover:text-white' : ''}`} />
         </button>
+        {mp3File && (
+          <div className="ml-2 flex items-center space-x-2 border-l border-primary-300 pl-4 dark:border-primary-700">
+            <span className="text-sm font-medium dark:text-gray-300">Speed:</span>
+            <select
+              value={playbackSpeed}
+              onChange={(e) => {
+                const newSpeed = parseFloat(e.target.value)
+                setPlaybackSpeed(newSpeed)
+                if (audioElement) {
+                  audioElement.playbackRate = newSpeed
+                }
+              }}
+              className="rounded border border-primary-300 bg-white px-2 py-1 text-sm hover:border-primary-400 dark:border-primary-700 dark:bg-gray-800 dark:text-white dark:hover:border-primary-600"
+            >
+              {speedOptions.map((speed) => (
+                <option key={speed} value={speed}>
+                  {speed}x
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </div>
     </>
   )
