@@ -9,15 +9,22 @@ const TextToSpeechPlayer = ({ text, translation = '', mp3File }) => {
   const [showTranslation, setShowTranslation] = useState(false)
   const [audioElement, setAudioElement] = useState(null)
   const [playbackSpeed, setPlaybackSpeed] = useState(1.0)
+  const [sentenceTimes, setSentenceTimes] = useState([])
+  const [audioDuration, setAudioDuration] = useState(0)
 
   const speedOptions = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0]
-
   const sentencesHTML = text.split('. ')
   const sentences = text.replace(/\*\*/g, '').split('. ')
   const parsedTranslation = translation.replace(/\*\*(.*?)\*\*/g, '<code>$1</code>')
 
-  const [sentenceTimes, setSentenceTimes] = useState([])
-  const [audioDuration, setAudioDuration] = useState(0)
+  // Calculate approximate time stamps for each sentence when audio duration changes
+  useEffect(() => {
+    if (audioDuration > 0) {
+      const timePerSentence = audioDuration / sentences.length
+      const times = sentences.map((_, index) => timePerSentence * index)
+      setSentenceTimes(times)
+    }
+  }, [audioDuration, sentences.length])
 
   useEffect(() => {
     // Initialize audio element when mp3File changes and we're in the browser
@@ -49,6 +56,7 @@ const TextToSpeechPlayer = ({ text, translation = '', mp3File }) => {
         setCurrentSentence(-1)
         if (isRepeating) {
           audio.currentTime = 0
+          setCurrentSentence(0)
           audio.play()
         }
       }
@@ -56,9 +64,13 @@ const TextToSpeechPlayer = ({ text, translation = '', mp3File }) => {
       // Add timeupdate listener to update current sentence
       audio.addEventListener('timeupdate', () => {
         if (audio.duration) {
-          const progress = audio.currentTime / audio.duration
+          const currentTime = audio.currentTime
+          const progress = currentTime / audio.duration
           const sentenceIndex = Math.floor(progress * sentences.length)
-          if (sentenceIndex !== currentSentence) {
+
+          // Only update if we have a valid sentence index and it's different from current
+          if (sentenceIndex >= 0 && sentenceIndex < sentences.length && sentenceIndex !== currentSentence) {
+            console.log('Updating current sentence to:', sentenceIndex)
             setCurrentSentence(sentenceIndex)
           }
         }
@@ -119,11 +131,16 @@ const TextToSpeechPlayer = ({ text, translation = '', mp3File }) => {
     if (mp3File && audioElement) {
       try {
         console.log('Attempting to play audio:', mp3File)
-        // Set current sentence before playing
-        setCurrentSentence(index || 0)
 
-        if (typeof index === 'number' && index >= 0) {
-          audioElement.currentTime = 0 // Always start from beginning of audio
+        if (typeof index === 'number' && index >= 0 && index < sentences.length) {
+          // Calculate the time to jump to based on sentence index
+          const progress = index / sentences.length
+          audioElement.currentTime = progress * audioElement.duration
+          setCurrentSentence(index)
+        } else {
+          // If no index provided or invalid, start from beginning
+          audioElement.currentTime = 0
+          setCurrentSentence(0)
         }
 
         audioElement
@@ -181,6 +198,11 @@ const TextToSpeechPlayer = ({ text, translation = '', mp3File }) => {
 
   const handleResume = () => {
     if (audioElement) {
+      // If at the end, start from beginning
+      if (audioElement.ended) {
+        audioElement.currentTime = 0
+        setCurrentSentence(0)
+      }
       audioElement.play()
     } else {
       window.speechSynthesis.resume()
@@ -191,7 +213,12 @@ const TextToSpeechPlayer = ({ text, translation = '', mp3File }) => {
 
   const handlePlayPause = () => {
     if (!isPlaying && !isPaused) {
-      handlePlay(currentSentence)
+      // If starting fresh or ended, start from beginning
+      if (audioElement && (audioElement.ended || audioElement.currentTime === 0)) {
+        audioElement.currentTime = 0
+        setCurrentSentence(0)
+      }
+      handlePlay(0)
     } else if (isPaused) {
       handleResume()
     } else {
@@ -206,15 +233,18 @@ const TextToSpeechPlayer = ({ text, translation = '', mp3File }) => {
   const handleRestart = () => {
     if (audioElement) {
       audioElement.pause()
-      audioElement.removeAttribute('src')
-      audioElement.load()
+      audioElement.currentTime = 0
+      setCurrentSentence(0)
+      setIsPlaying(false)
+      setIsPaused(false)
+      handlePlay(0)
     } else {
       window.speechSynthesis.cancel()
+      setCurrentSentence(0)
+      setIsPlaying(false)
+      setIsPaused(false)
+      handlePlay(0)
     }
-    setCurrentSentence(0)
-    setIsPlaying(false)
-    setIsPaused(false)
-    handlePlay(0)
   }
 
   return (
