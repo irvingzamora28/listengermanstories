@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { FiPauseCircle, FiPlayCircle, FiRepeat, FiRewind } from 'react-icons/fi'
+import { FiRewind, FiPlayCircle, FiPauseCircle, FiRepeat, FiChevronDown, FiChevronUp } from 'react-icons/fi'
 
 const TextToSpeechPlayer = ({ text, translation = '', mp3File }) => {
   const [isPlaying, setIsPlaying] = useState(false)
@@ -240,64 +240,125 @@ const TextToSpeechPlayer = ({ text, translation = '', mp3File }) => {
   }
 
   return (
-    <>
-      <p>
+    <div className="mx-auto max-w-4xl space-y-4 p-2">
+      {/* Text Content */}
+      <p className="text-base leading-relaxed">
         {sentences.map((sentence, index) => {
           const parsedSentence = sentence.replace(/\*\*(.*?)\*\*/g, '<code>$1</code>')
           return (
             <span
               key={index}
-              className={`cursor-pointer transition-colors duration-200 ${index === currentSentence ? 'bg-primary-200 dark:bg-primary-800' : 'hover:bg-primary-100 dark:hover:bg-primary-900'}`}
+              className={`
+                cursor-pointer 
+                rounded
+                px-0.5
+                transition-all duration-300 ease-in-out
+                ${index === currentSentence ? 'bg-primary-100 ring-1 ring-primary-300 dark:bg-primary-900 dark:ring-primary-700' : 'hover:bg-gray-100 dark:hover:bg-gray-800'}
+              `}
               onClick={() => {
                 if (mp3File && audioElement) {
                   handlePlay(index)
                 }
               }}
-              dangerouslySetInnerHTML={{ __html: parsedSentence + (index < sentences.length - 1 ? '. ' : '') }}
+              dangerouslySetInnerHTML={{
+                __html: parsedSentence + (index < sentences.length - 1 ? '. ' : ''),
+              }}
             />
           )
         })}
-        {showTranslation && <p className="text-md mt-4 rounded-md bg-gray-100 p-2 italic dark:bg-gray-800" dangerouslySetInnerHTML={{ __html: parsedTranslation }} />}
       </p>
 
-      <button onClick={toggleTranslation} className="my-4 rounded bg-primary-500 px-4 py-2 text-white hover:bg-primary-600">
-        Toggle Translation
-      </button>
+      {/* Translation Panel */}
+      {showTranslation && <div className="border-l-2 border-primary-500 bg-gray-50 py-1 pl-2 text-sm italic dark:bg-gray-800" dangerouslySetInnerHTML={{ __html: parsedTranslation }} />}
 
-      <div className="flex items-center justify-center space-x-4 rounded-lg bg-primary-200 p-4 shadow-lg hover:shadow-xl dark:bg-primary-800">
-        <button onClick={handleRestart} className="rounded-full p-2 hover:bg-primary-300 hover:text-white">
-          <FiRewind size={24} />
-        </button>
-        <button onClick={handlePlayPause} className="rounded-full p-2 hover:bg-primary-300 hover:text-white">
-          {isPlaying ? <FiPauseCircle size={24} /> : <FiPlayCircle size={24} />}
-        </button>
-        <button onClick={handleRepeat} className="rounded-full p-2 hover:bg-primary-300 hover:text-white">
-          <FiRepeat size={24} className={` ${isRepeating ? 'rounded-full text-primary-600 hover:text-white' : ''}`} />
-        </button>
-        {mp3File && (
-          <div className="ml-2 flex items-center space-x-2 border-l border-primary-300 pl-4 dark:border-primary-700">
-            <span className="text-sm font-medium dark:text-gray-300">Speed:</span>
-            <select
-              value={playbackSpeed}
-              onChange={(e) => {
-                const newSpeed = parseFloat(e.target.value)
-                setPlaybackSpeed(newSpeed)
-                if (audioElement) {
-                  audioElement.playbackRate = newSpeed
-                }
-              }}
-              className="rounded border border-primary-300 bg-white px-2 py-1 text-sm hover:border-primary-400 dark:border-primary-700 dark:bg-gray-800 dark:text-white dark:hover:border-primary-600"
+      {/* Compact Audio Controls */}
+      <div className="flex flex-col gap-2">
+        <div
+          className="
+          flex items-center 
+          justify-between
+          rounded-lg
+          border
+          border-gray-200 bg-white
+          p-2
+          shadow dark:border-gray-700 dark:bg-gray-800
+        "
+        >
+          {/* Main Controls Group */}
+          <div className="flex items-center gap-2">
+            <button onClick={handleRestart} className="rounded-full p-1.5 text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700">
+              <FiRewind className="h-4 w-4" />
+            </button>
+
+            <button
+              onClick={handlePlayPause}
+              className="
+                rounded-full
+                bg-primary-500
+                p-2
+                text-white
+                hover:bg-primary-600
+              "
             >
-              {speedOptions.map((speed) => (
-                <option key={speed} value={speed}>
-                  {speed}x
-                </option>
-              ))}
-            </select>
+              {isPlaying ? <FiPauseCircle className="h-6 w-6" /> : <FiPlayCircle className="h-6 w-6" />}
+            </button>
+
+            <button
+              onClick={handleRepeat}
+              className={`
+                rounded-full
+                p-1.5
+                ${isRepeating ? 'bg-primary-100 text-primary-600 dark:bg-primary-900 dark:text-primary-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'}
+              `}
+            >
+              <FiRepeat className="h-4 w-4" />
+            </button>
           </div>
-        )}
+
+          {/* Right Side Controls */}
+          <div className="flex items-center gap-2">
+            {mp3File && (
+              <select
+                value={playbackSpeed}
+                onChange={(e) => {
+                  const newSpeed = parseFloat(e.target.value)
+                  setPlaybackSpeed(newSpeed)
+                  if (audioElement) {
+                    audioElement.playbackRate = newSpeed
+                  }
+                }}
+                className="
+                  rounded border
+                  border-gray-200
+                  bg-white
+                  px-2 py-1 text-xs
+                  focus:outline-none focus:ring-1
+                  focus:ring-primary-500 dark:border-gray-700 dark:bg-gray-900
+                "
+              >
+                {speedOptions.map((speed) => (
+                  <option key={speed} value={speed}>
+                    {speed}x
+                  </option>
+                ))}
+              </select>
+            )}
+
+            <button
+              onClick={toggleTranslation}
+              className="
+                rounded-full
+                p-1.5
+                text-gray-600 hover:bg-gray-100
+                dark:text-gray-400 dark:hover:bg-gray-700
+              "
+            >
+              {showTranslation ? <FiChevronUp className="h-4 w-4" /> : <FiChevronDown className="h-4 w-4" />}
+            </button>
+          </div>
+        </div>
       </div>
-    </>
+    </div>
   )
 }
 
