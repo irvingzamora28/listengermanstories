@@ -5,7 +5,7 @@ const siteMetadata = {
   description: 'Improve your German reading and listening skills with engaging stories brought to life through audio.',
   language: 'en-us',
   theme: 'system', // system, dark or light
-  siteUrl: 'https://tailwind-nextjs-starter-blog.vercel.app',
+  siteUrl: 'https://www.listengermanstories.online',
   siteRepo: 'https://github.com/irvingzamora28/listengermanstories',
   siteLogo: '/static/images/logo.png',
   image: '/static/images/avatar.png',
