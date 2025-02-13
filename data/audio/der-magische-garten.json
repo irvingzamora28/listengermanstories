@@ -1,0 +1,18 @@
+{
+  "language_code": "de",
+  "country_code": "DE",
+  "data": [
+    {
+      "text": "Paul und Emma gingen im Wald spazieren, als sie ein geheimnisvolles Tor entdeckten.",
+      "audio_file_name": "der-magische-garten-1.mp3"
+    },
+    {
+      "text": "Sie traten durch das Tor und fanden sich in einem wunderschönen Garten wieder. Dort trafen sie sprechende Tiere.",
+      "audio_file_name": "der-magische-garten-2.mp3"
+    },
+    {
+      "text": "Paul und Emma erlebten im magischen Garten viele aufregende Abenteuer. Sie lernten, dass Freundschaft und Mut die grösste Magie sind.",
+      "audio_file_name": "der-magische-garten-3.mp3"
+    }
+  ]
+}
