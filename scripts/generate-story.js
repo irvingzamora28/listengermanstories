@@ -317,8 +317,9 @@ Provide only the image description, no additional text.`
       chapterNum++
     }
 
+    // TODO: Improve prompt image generation, currently sometimes it doesnt make sense with characters recognition
     // Create images directory if it doesn't exist
-    const imagesDir = path.join(storiesDir, 'images')
+    const imagesDir = path.join(__dirname, '..', 'data', 'images')
     try {
       await fs.mkdir(imagesDir, { recursive: true })
     } catch (error) {
@@ -326,7 +327,8 @@ Provide only the image description, no additional text.`
     }
 
     // Save image prompts to JSON file
-    const imagePromptsPath = path.join(imagesDir, `${filename}-image-prompts.json`)
+    const imagePromptsPath = path.join(__dirname, '..', 'data', 'images', `${filename}-image-prompts.json`)
+
     await fs.writeFile(imagePromptsPath, JSON.stringify(imagePromptData, null, 2))
 
     // Reset chapter number for audio data
