@@ -4,6 +4,9 @@ require('dotenv').config()
 const { GoogleGenerativeAI } = require('@google/generative-ai')
 const fs = require('fs').promises
 const path = require('path')
+
+// Define paths
+const storiesDir = path.join(__dirname, '..', 'data', 'stories')
 const yargs = require('yargs/yargs')
 const { hideBin } = require('yargs/helpers')
 
@@ -49,19 +52,17 @@ async function generateStory() {
 
     const exampleStory = `---
 title: 'Der magische Schlüssel'
-date: '${currentDate}'
-lastmod: '${currentDate}'
+date: '2025-02-10'
+lastmod: '2025-02-10'
 tags: ['Beginner', 'Mystery', 'Magic', 'Key', 'Friendship']
 draft: false
 summary: 'Leo findet einen magischen Schlüssel, der ihm die Tür zu einem aufregenden Abenteuer mit seiner Freundin Mia öffnet.'
 images: ['/static/images/magischer-schluessel-1.png']
 ---
 
-import TextToSpeechPlayer from './TextToSpeechPlayer.js'
-
 ## Kapitel 1: Das geheimnisvolle Fundstück
 
-![Der Dachboden](/static/images/magischer-schluessel-1.png)
+import TextToSpeechPlayer from './TextToSpeechPlayer.js'
 
 <TextToSpeechPlayer
   text='Leo fand auf dem **Dachboden** seines **Hauses** einen alten, rostigen **Schlüssel**. Er war neugierig und fragte sich, welches **Schloss** dazu passte.'
@@ -69,16 +70,95 @@ import TextToSpeechPlayer from './TextToSpeechPlayer.js'
   mp3File='/static/audio/magischer-schluessel-1.mp3'
 />
 
+## Kapitel 2: Die beste Freundin
+
+![Leo und Mia](/static/images/magischer-schluessel-2.png)
+
+<TextToSpeechPlayer
+  text='Er zeigte den Schlüssel seiner besten **Freundin** Mia. Zusammen beschlossen sie, das **Geheimnis** des Schlüssels zu lüften.'
+  translation='He showed the key to his best **friend** Mia. Together, they decided to solve the **mystery** of the key.'
+  mp3File='/static/audio/magischer-schluessel-2.mp3'
+/>
+
+## Kapitel 3: Die alte Truhe
+
+![Die alte Truhe](/static/images/magischer-schluessel-3.png)
+
+<TextToSpeechPlayer
+  text='Auf dem **Spielplatz** entdeckten sie eine alte **Truhe**. Leo probierte den Schlüssel aus, und er passte! Die Truhe öffnete sich.'
+  translation='At the **playground**, they discovered an old **chest**. Leo tried the key, and it fit! The chest opened.'
+  mp3File='/static/audio/magischer-schluessel-3.mp3'
+/>
+
+## Kapitel 4: Ein magisches Buch
+
+<TextToSpeechPlayer
+  text='In der Truhe lag ein altes **Buch**. Als sie es öffneten, leuchteten die **Seiten** und zeigten ihnen einen geheimen **Pfad**.'
+  translation='Inside the chest was an old **book**. When they opened it, the **pages** lit up and showed them a secret **path**.'
+  mp3File='/static/audio/magischer-schluessel-4.mp3'
+/>
+
+## Kapitel 5: Das Abenteuer beginnt
+
+![Der geheime Pfad](/static/images/magischer-schluessel-4.png)
+
+<TextToSpeechPlayer
+  text='Der Pfad führte sie zu einem verborgenen **Garten**. Dort trafen sie sprechende **Tiere** und magische **Pflanzen**.'
+  translation='The path led them to a hidden **garden**. There, they met talking **animals** and magical **plants**.'
+  mp3File='/static/audio/magischer-schluessel-5.mp3'
+/>
+
+## Kapitel 6: Eine unvergessliche Freundschaft
+
+<TextToSpeechPlayer
+  text='Leo und Mia erlebten viele aufregende Abenteuer. Sie lernten, dass **Freundschaft** und **Mut** die grössten **Schätze** sind.'
+  translation='Leo and Mia experienced many exciting adventures. They learned that **friendship** and **courage** are the greatest **treasures**.'
+  mp3File='/static/audio/magischer-schluessel-6.mp3'
+/>
+
 ## Vocabulary words (Gender, Word, Translation):
 
 - der **Dachboden** (Attic)
 - das **Haus** (House)
 - der **Schlüssel** (Key)
-- das **Schloss** (Lock)`
+- das **Schloss** (Lock)
+- die **Freundin** (Friend)
+- das **Geheimnis** (Mystery, Secret)
+- der **Spielplatz** (Playground)
+- die **Truhe** (Chest)
+- das **Buch** (Book)
+- die **Seiten** (Pages)
+- der **Pfad** (Path)
+- der **Garten** (Garden)
+- die **Tiere** (Animals)
+- die **Pflanzen** (Plants)
+- die **Freundschaft** (Friendship)
+- der **Mut** (Courage)
+- der **Schatz** (Treasure)
+`
 
     // Generate story content
     // Define the story requirements with formatting rules
-    const storyPrompt = `Create a German learning story in MDX format about ${argv.title} with ${argv.paragraphs} chapters at ${argv.difficulty} level.\n\nFormatting Rules:\n1. Use proper quotes:\n   - Single quotes for attributes\n   - Double quotes for dialogue\n2. Include natural dialogue\n3. Bold (**) vocabulary\n4. Each chapter needs:\n   - Title\n   - Image\n   - TextToSpeechPlayer\n\nExample:\n<TextToSpeechPlayer\n  text='Emma sagte: "Schau mal, eine **Katze**!"'\n  translation='Emma said: "Look, a **cat**!"'\n/>\n\nMake it engaging for learners.
+    const storyPrompt = `Create a German learning story in MDX format about ${argv.title} with ${argv.paragraphs} chapters at ${argv.difficulty} level.
+    
+    Formatting Rules:
+    1. Use proper quotes:
+       - Single quotes for attributes
+       - Double quotes for dialogue
+    2. Include natural dialogue
+    3. Bold (**) vocabulary
+    4. Each chapter needs:
+       - Title
+       - Image
+       - TextToSpeechPlayer
+    
+    Example:
+    <TextToSpeechPlayer
+      text='Emma sagte: "Schau mal, eine **Katze**!"'
+        translation='Emma said: "Look, a **cat**!"'
+      />
+      
+      Make it engaging for learners.
 
 Example MDX format:
 ---
@@ -100,19 +180,44 @@ featuredImage: '/images/stories/der-magische-garten.jpg'
   translation='Lisa discovered a **garden**. "Wow, what a beautiful **garden**!" she said.'
 />
 
-## Vokabeln
-- der **Garten** (Garden)
-- schön (Beautiful)
-- Use double quotes for dialogue
-- Bold (**) important vocabulary
-- Include dialogue in each chapter
-
 Example format:
 <TextToSpeechPlayer
   text='Lisa sagte: "Schau mal, eine **Katze** im **Garten**!"'
   translation='Lisa said: "Look, a **cat** in the **garden**!"'
 />
-\n\nKey requirements:\n1. Include natural dialogue in each chapter\n2. Use proper quote formatting:\n   - Single quotes for component attributes\n   - Double quotes for spoken dialogue\n3. Bold (**) all important vocabulary words\n4. Make the story engaging for language learners\n\nIMPORTANT FORMATTING RULES:\n1. Include dialogue in each chapter using proper quotes:\n   - Use single quotes (') around the entire text/translation attribute\n   - Use double quotes (") for dialogue\n   Example:\n   text='Emma fragte: "Wo ist deine **Katze**?" Tom antwortete: "Im **Garten**".'\n\n2. Bold important vocabulary words with ** in both languages\n3. Make sure dialogues are natural and engaging\n4. Never use curly quotes or other special quote characters\n\nIMPORTANT FORMATTING RULES:\n1. In the TextToSpeechPlayer components:\n   - Use single quotes (') for the component attributes\n   - Use double quotes (") for any quoted speech in the text\n   Example:\n   <TextToSpeechPlayer\n     text='Der Junge sagte: "Hallo, wie geht es dir?"'\n     translation='The boy said: "Hello, how are you?"'\n   />\n\n2. Never use curly quotes (‘’) or (“”) - only use straight quotes (' and ")
+
+
+Key requirements:
+1. Include natural dialogue in each chapter
+2. Use proper quote formatting:
+   - Single quotes for component attributes
+   - Double quotes for spoken dialogue
+3. Bold (**) all important vocabulary words
+4. Make the story engaging for language learners
+   
+IMPORTANT FORMATTING RULES:
+1. Include dialogue in each chapter using proper quotes:
+  - Use single quotes (') around the entire text/translation attribute
+  - Use double quotes (") for dialogue
+  Example:
+      text='Emma fragte: "Wo ist deine **Katze**?" Tom antwortete: "Im **Garten**".'
+  
+2. Bold important vocabulary words with ** in both languages
+3. Make sure dialogues are natural and engaging
+4. Never use curly quotes or other special quote characters
+      
+IMPORTANT FORMATTING RULES:
+1. In the TextToSpeechPlayer components:
+  - Use single quotes (') for the component attributes
+  - Use double quotes (") for any quoted speech in the text
+      Example:
+      <TextToSpeechPlayer
+        text='Der Junge sagte: "Hallo, wie geht es dir?"'
+              translation='The boy said: "Hello, how are you?"'
+            />
+2. Never use curly quotes (‘’) or (“”) - only use straight quotes (' and ")
+3. The text attribute MUST always be a single quoted string
+4. The translation attribute MUST always be a single quoted string
 
 Example MDX format:
 ${exampleStory}
@@ -150,6 +255,83 @@ Generate the complete MDX file content following this format exactly.`
       .replace(/lastmod: '[^']+'/g, `lastmod: '${currentDate}'`)
       .trim()
 
+    // Generate image prompts
+    const imagePromptData = {
+      story_title: argv.title,
+      images: [],
+    }
+
+    // Extract chapter titles, text content, and generate image prompts
+    const chapters = []
+    /* eslint-disable no-useless-escape */
+    const chapterRegex = /## ([^\n]+)\n\n!\[([^\]]+)\]\(([^\)]+)\)\n\n<TextToSpeechPlayer\s+text='([^']+)'\s+translation='([^']+)'/g
+    let match
+
+    while ((match = chapterRegex.exec(cleanedContent)) !== null) {
+      chapters.push({
+        title: match[1],
+        imageAlt: match[2],
+        imagePath: match[3],
+        germanText: match[4].replace(/\*\*/g, ''), // Remove bold markers
+        englishText: match[5].replace(/\*\*/g, ''), // Remove bold markers
+      })
+    }
+
+    let chapterNum = 1
+
+    // Create a prompt for generating image descriptions
+    const imagePrompt = `Create a detailed image prompt for a 3D animated scene from a children's story. The scene details are:
+
+Chapter Title: $CHAPTER_TITLE
+Scene Description (German): $GERMAN_TEXT
+Scene Description (English): $ENGLISH_TEXT
+
+Requirements:
+1. Style: 3D Animation similar to modern Pixar or Disney movies
+2. Lighting: Bright and cheerful
+3. Detail: Include specific details about characters, expressions, and environment
+4. Mood: Friendly and inviting for children
+5. Color: Vibrant and engaging color palette
+
+Provide only the image description, no additional text.`
+
+    // Generate image prompts for each chapter
+    for (const chapter of chapters) {
+      // Replace placeholders in prompt
+      const promptText = imagePrompt.replace('$CHAPTER_TITLE', chapter.title).replace('$GERMAN_TEXT', chapter.germanText).replace('$ENGLISH_TEXT', chapter.englishText)
+
+      // Generate image prompt using Gemini
+      const result = await model.generateContent(promptText)
+      const imagePromptText = result.response.text()
+
+      imagePromptData.images.push({
+        chapter_number: chapterNum,
+        chapter_title: chapter.title,
+        image_path: chapter.imagePath,
+        image_alt: chapter.imageAlt,
+        german_text: chapter.germanText,
+        english_text: chapter.englishText,
+        prompt: `3D Animated Scene: ${imagePromptText.trim()}`,
+      })
+
+      chapterNum++
+    }
+
+    // Create images directory if it doesn't exist
+    const imagesDir = path.join(storiesDir, 'images')
+    try {
+      await fs.mkdir(imagesDir, { recursive: true })
+    } catch (error) {
+      if (error.code !== 'EEXIST') throw error
+    }
+
+    // Save image prompts to JSON file
+    const imagePromptsPath = path.join(imagesDir, `${filename}-image-prompts.json`)
+    await fs.writeFile(imagePromptsPath, JSON.stringify(imagePromptData, null, 2))
+
+    // Reset chapter number for audio data
+    chapterNum = 1
+
     // Extract German text from TextToSpeechPlayer components
     const audioData = {
       language_code: 'de',
@@ -159,8 +341,7 @@ Generate the complete MDX file content following this format exactly.`
 
     // Use regex to find all TextToSpeechPlayer components and extract German text
     const textMatches = cleanedContent.matchAll(/<TextToSpeechPlayer\s+text='([^']+)'[^>]+>/g)
-    let chapterNum = 1
-
+    chapterNum = 1
     for (const match of textMatches) {
       // Remove bold markers and escape quotes for JSON
       const germanText = match[1]
@@ -190,11 +371,6 @@ Generate the complete MDX file content following this format exactly.`
     console.log('\nNext steps:')
     console.log('1. Add the corresponding images to /static/images/')
     console.log('2. Generate audio files for each chapter')
-    console.log('3. Review and edit the content as needed')
-
-    console.log('\nNext steps:')
-    console.log('1. Add images to /static/images/')
-    console.log('2. Use the generated JSON file to create audio files')
     console.log('3. Review and edit the content as needed')
   } catch (error) {
     console.error('Error generating story:', error.message)
