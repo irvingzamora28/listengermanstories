@@ -12,7 +12,7 @@ const editUrl = (fileName) => `${siteMetadata.siteRepo}/blob/master/data/blog/${
 
 const postDateTemplate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
 
-export default function PostLayout({ frontMatter, authorDetails, next, prev, children }) {
+export default function BlogPostLayout({ frontMatter, authorDetails, next, prev, children }) {
   const { slug, fileName, date, title, images, tags } = frontMatter
 
   return (
