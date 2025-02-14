@@ -48,7 +48,7 @@ async function generateStory() {
     const currentDate = new Date().toISOString().split('T')[0]
 
     // Initialize the model
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' })
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
 
     const exampleStory = `---
 title: 'Der magische Schlüssel'

@@ -59,7 +59,7 @@ async function generateBlogPost() {
     const currentDate = new Date().toISOString().split('T')[0]
 
     // Initialize the model
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' })
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
 
     // Prepare keywords for the prompt
     const keywords = argv.keywords ? argv.keywords.split(',').map((k) => k.trim()) : []
