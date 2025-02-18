@@ -189,6 +189,28 @@ npm run generate-story -- --title "Your Story Title" --difficulty B1 --paragraph
 - Uses Google's Gemini 2.0 Flash model
 - Automatic date formatting in front matter
 
+## Image Optimization
+
+Optimize and convert images to WebP format using this command:
+
+```bash
+node scripts/optimize-images.js --directory "" --quality 85 --width 800
+```
+
+### Parameters:
+
+- `--directory` or `-d`: Target subdirectory in `public/static/images` (default: 'blog')
+- `--quality` or `-q`: WebP quality (1-100, default: 80)
+- `--width` or `-w`: Maximum image width (default: 1200)
+
+### Features:
+
+- Converts images to WebP format for better compression
+- Resizes images to specified maximum width
+- Preserves aspect ratio
+- Shows size savings for each optimized image
+- Supports JPG, JPEG, PNG, and GIF formats
+
 ## Blog Post Generation
 
 Generate blog posts using AI with this command:
