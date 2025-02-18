@@ -7,6 +7,7 @@ import TOCInline from './TOCInline'
 import Pre from './Pre'
 import { BlogNewsletterForm } from './NewsletterForm'
 import TextToSpeechPlayer from './TextToSpeechPlayer.js'
+import RelatedPost from './RelatedPost'
 
 const FAQ = ({ question, children }) => (
   <div className="faq my-6 rounded-lg border-l-4 border-primary-500 bg-gray-50 p-4">
@@ -28,6 +29,7 @@ export const MDXComponents = {
   TextToSpeechPlayer: TextToSpeechPlayer,
   BlogNewsletterForm: BlogNewsletterForm,
   FAQ: FAQ,
+  RelatedPost: RelatedPost,
   wrapper: ({ components, layout, ...rest }) => {
     const Layout = require(`../layouts/${layout}`).default
     return <Layout {...rest} />

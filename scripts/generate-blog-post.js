@@ -6,6 +6,7 @@ const fs = require('fs').promises
 const path = require('path')
 const yargs = require('yargs/yargs')
 const { hideBin } = require('yargs/helpers')
+const matter = require('gray-matter')
 
 // Define paths
 const blogDir = path.join(__dirname, '..', 'data', 'blog')
@@ -47,6 +48,34 @@ const argv = yargs(hideBin(process.argv))
   })
   .help()
   .alias('help', 'h').argv
+
+async function findRelatedPosts(tags, category, currentFilename) {
+  const files = await fs.readdir(blogDir)
+  const relatedPosts = []
+
+  for (const file of files) {
+    if (file.endsWith('.mdx') && file !== currentFilename) {
+      const content = await fs.readFile(path.join(blogDir, file), 'utf8')
+      const { data } = matter(content)
+
+      // Check if the post shares tags or category
+      const hasMatchingTags = tags.some((tag) => data.tags?.some((postTag) => postTag.toLowerCase().includes(tag.toLowerCase())))
+      const hasMatchingCategory = data.category === category
+
+      if (hasMatchingTags || hasMatchingCategory) {
+        relatedPosts.push({
+          title: data.title,
+          slug: file.replace(/\.mdx$/, ''),
+          summary: data.summary,
+          matchScore: (hasMatchingTags ? 1 : 0) + (hasMatchingCategory ? 1 : 0),
+        })
+      }
+    }
+  }
+
+  // Sort by match score and return top 3
+  return relatedPosts.sort((a, b) => b.matchScore - a.matchScore).slice(0, 3)
+}
 
 async function generateBlogPost() {
   try {
@@ -106,6 +135,7 @@ async function generateBlogPost() {
       date: "${currentDate}"
       lastmod: "${currentDate}"
       tags: [Array of relevant tags]
+      category: "[Category]"
       draft: false
       summary: [Compelling summary that includes main keywords]
       images: ['/static/images/blog/${filename}-1.png']
@@ -146,9 +176,22 @@ async function generateBlogPost() {
     const result = await model.generateContent(prompt)
     const blogContent = result.response.text()
 
-    // Write the content to the file
+    // Find related posts based on tags and category
+    const relatedPosts = await findRelatedPosts(keywords, argv.category, `${filename}.mdx`)
+    console.log('Related posts:', relatedPosts)
+
+    const relatedPostsSection =
+      relatedPosts.length > 0
+        ? `
+
+## Related Posts
+
+${relatedPosts.map((post) => `<RelatedPost href="/blog/${post.slug}" title="${post.title}" summary="${post.summary}" />`).join('\n')}`
+        : ''
+
+    // Write the content to the file with related posts appended
     await fs.mkdir(blogDir, { recursive: true })
-    await fs.writeFile(outputPath, blogContent, 'utf8')
+    await fs.writeFile(outputPath, blogContent + relatedPostsSection, 'utf8')
 
     console.log(`✅ Blog post generated successfully at: ${outputPath}`)
   } catch (error) {
