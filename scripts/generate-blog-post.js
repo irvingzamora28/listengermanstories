@@ -49,6 +49,67 @@ const argv = yargs(hideBin(process.argv))
   .help()
   .alias('help', 'h').argv
 
+async function findBlogForBacklink(currentFilename, category, keywords) {
+  const files = await fs.readdir(blogDir)
+  let randomPost
+  const blogPosts = []
+
+  let totalPosts = 0
+  let randomPostIndex = null
+
+  for (const file of files) {
+    if (file.endsWith('.mdx') && file !== currentFilename) {
+      totalPosts++
+    }
+  }
+
+  randomPostIndex = Math.floor(Math.random() * totalPosts)
+
+  let currentIndex = 0
+  for (const file of files) {
+    if (file.endsWith('.mdx') && file !== currentFilename) {
+      const content = await fs.readFile(path.join(blogDir, file), 'utf8')
+      const { data, content: blogContent } = matter(content)
+
+      if (currentIndex === randomPostIndex) {
+        randomPost = {
+          title: data.title,
+          slug: file.replace(/\.mdx$/, ''),
+          summary: data.summary,
+          content: blogContent,
+          category: data.category,
+          tags: data.tags || [],
+        }
+      }
+
+      // Calculate relevance score based on matching category and tags
+      const hasMatchingCategory = data.category === category
+      const matchingTags = (data.tags || []).filter((tag) => keywords.some((keyword) => tag.toLowerCase().includes(keyword.toLowerCase()))).length
+
+      // Higher score for matching category and tags
+      const relevanceScore = (hasMatchingCategory ? 2 : 0) + matchingTags
+
+      if (relevanceScore > 0) {
+        // Only include posts with some relevance
+        blogPosts.push({
+          title: data.title,
+          slug: file.replace(/\.mdx$/, ''),
+          summary: data.summary,
+          content: blogContent,
+          category: data.category,
+          tags: data.tags || [],
+          relevanceScore,
+        })
+      }
+      currentIndex++
+    }
+  }
+
+  // Sort by relevance score and pick the most relevant one
+  // If no relevant posts found, return a random post
+  return blogPosts.length > 0 ? blogPosts.sort((a, b) => b.relevanceScore - a.relevanceScore)[0] : randomPost
+}
+
 async function findRelatedPosts(tags, category, currentFilename) {
   const files = await fs.readdir(blogDir)
   const relatedPosts = []
@@ -93,6 +154,25 @@ async function generateBlogPost() {
     // Prepare keywords for the prompt
     const keywords = argv.keywords ? argv.keywords.split(',').map((k) => k.trim()) : []
 
+    // Find a blog post to use for backlinking
+    const blogForBacklink = await findBlogForBacklink(`${filename}.mdx`, argv.category, keywords)
+    console.log(blogForBacklink)
+
+    const backlinkPrompt = blogForBacklink
+      ? `
+      **Blog Post for Contextual Backlinking:**
+      Title: ${blogForBacklink.title}
+      Summary: ${blogForBacklink.summary}
+      Link Format: [text to display](/blog/${blogForBacklink.slug})
+      
+      Instructions for Backlinking:
+      1. Read through the blog post summary above
+      2. Find a natural place in your content where this blog post would be relevant
+      3. Add a contextual link using the format provided
+      4. Do not force the link if it doesn't fit the content naturally
+      `
+      : ''
+
     const prompt = `
       Generate a comprehensive and engaging blog post about German language learning, following these guidelines:
 
@@ -128,6 +208,7 @@ async function generateBlogPost() {
 
       **Topic:** ${argv.title}
       **Category:** ${argv.category}
+      ${backlinkPrompt}
 
       **Example of Excellent Blog Post Structure:** (Follow this structure, but don't copy the content)
       ---
