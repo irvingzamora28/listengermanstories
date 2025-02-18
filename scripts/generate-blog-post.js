@@ -255,7 +255,7 @@ async function generateBlogPost() {
 
     // Generate the blog post content
     const result = await model.generateContent(prompt)
-    const blogContent = result.response.text()
+    let blogContent = result.response.text()
 
     // Find related posts based on tags and category
     const relatedPosts = await findRelatedPosts(keywords, argv.category, `${filename}.mdx`)
@@ -272,6 +272,10 @@ ${relatedPosts.map((post) => `<RelatedPost href="/blog/${post.slug}" title="${po
 
     // Write the content to the file with related posts appended
     await fs.mkdir(blogDir, { recursive: true })
+
+    // Remove ```mdx from the beginning of the content and ``` from the end
+    blogContent = blogContent.replace('```mdx\n---', '---')
+    blogContent = blogContent.replace('```', '')
     await fs.writeFile(outputPath, blogContent + relatedPostsSection, 'utf8')
 
     console.log(`✅ Blog post generated successfully at: ${outputPath}`)
