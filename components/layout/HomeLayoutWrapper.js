@@ -30,7 +30,7 @@ const HomeLayoutWrapper = ({ children }) => {
               <Link href="/" aria-label={siteMetadata.headerTitle}>
                 <div className="flex items-center justify-between">
                   <div className="mr-3">
-                    <Image src="/static/images/logo.png" width={150} height={150} alt="Listen German Stories" />
+                    <Image src="/static/images/logo.webp" width={150} height={150} alt="Listen German Stories" />
                   </div>
                 </div>
               </Link>
@@ -51,7 +51,7 @@ const HomeLayoutWrapper = ({ children }) => {
         <div className="relative z-0">
           <div className="relative h-[400px] w-full overflow-hidden">
             <div ref={parallaxRef} className="absolute inset-0 h-[150%]">
-              <Image className="object-cover" src="/static/images/hero-image.png" layout="fill" objectFit="cover" quality={100} alt="Hero Background" />
+              <Image className="object-cover" src="/static/images/hero-image.webp" layout="fill" objectFit="cover" quality={100} alt="Hero Background" />
               <div className="absolute inset-0 bg-black opacity-20 dark:opacity-80"></div>
               <div className="absolute inset-0 flex items-center justify-center text-center text-6xl font-bold text-white">
                 <span className="">

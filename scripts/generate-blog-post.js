@@ -219,7 +219,7 @@ async function generateBlogPost() {
       category: "[Category]"
       draft: false
       summary: [Compelling summary that includes main keywords]
-      images: ['/static/images/blog/${filename}-1.png']
+      images: ['/static/images/blog/${filename}-1.webp']
       ---
 
       ## Introduction

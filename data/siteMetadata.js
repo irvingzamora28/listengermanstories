@@ -7,9 +7,9 @@ const siteMetadata = {
   theme: 'system', // system, dark or light
   siteUrl: 'https://www.listengermanstories.online',
   siteRepo: 'https://github.com/irvingzamora28/listengermanstories',
-  siteLogo: '/static/images/logo.png',
-  image: '/static/images/avatar.png',
-  socialBanner: '/static/images/twitter-card.png',
+  siteLogo: '/static/images/logo.webp',
+  image: '/static/images/avatar.webp',
+  socialBanner: '/static/images/twitter-card.webp',
   email: 'address@yoursite.com',
   github: 'https://github.com',
   twitter: 'https://twitter.com/Twitter',

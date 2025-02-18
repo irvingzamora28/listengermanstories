@@ -1,6 +1,6 @@
 ---
 name: Max Müller
-avatar: /static/images/avatar.png
+avatar: /static/images/avatar.webp
 occupation: Software Engineer
 company: SAP
 email: address@yoursite.com

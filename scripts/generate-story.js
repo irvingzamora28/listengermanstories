@@ -57,7 +57,7 @@ lastmod: '2025-02-10'
 tags: ['Beginner', 'Mystery', 'Magic', 'Key', 'Friendship']
 draft: false
 summary: 'Leo findet einen magischen Schlüssel, der ihm die Tür zu einem aufregenden Abenteuer mit seiner Freundin Mia öffnet.'
-images: ['/static/images/magischer-schluessel-1.png']
+images: ['/static/images/magischer-schluessel-1.webp']
 ---
 
 ## Kapitel 1: Das geheimnisvolle Fundstück
@@ -72,7 +72,7 @@ import TextToSpeechPlayer from './TextToSpeechPlayer.js'
 
 ## Kapitel 2: Die beste Freundin
 
-![Leo und Mia](/static/images/magischer-schluessel-2.png)
+![Leo und Mia](/static/images/magischer-schluessel-2.webp)
 
 <TextToSpeechPlayer
   text='Er zeigte den Schlüssel seiner besten **Freundin** Mia. Zusammen beschlossen sie, das **Geheimnis** des Schlüssels zu lüften.'
@@ -82,7 +82,7 @@ import TextToSpeechPlayer from './TextToSpeechPlayer.js'
 
 ## Kapitel 3: Die alte Truhe
 
-![Die alte Truhe](/static/images/magischer-schluessel-3.png)
+![Die alte Truhe](/static/images/magischer-schluessel-3.webp)
 
 <TextToSpeechPlayer
   text='Auf dem **Spielplatz** entdeckten sie eine alte **Truhe**. Leo probierte den Schlüssel aus, und er passte! Die Truhe öffnete sich.'
@@ -100,7 +100,7 @@ import TextToSpeechPlayer from './TextToSpeechPlayer.js'
 
 ## Kapitel 5: Das Abenteuer beginnt
 
-![Der geheime Pfad](/static/images/magischer-schluessel-4.png)
+![Der geheime Pfad](/static/images/magischer-schluessel-4.webp)
 
 <TextToSpeechPlayer
   text='Der Pfad führte sie zu einem verborgenen **Garten**. Dort trafen sie sprechende **Tiere** und magische **Pflanzen**.'
