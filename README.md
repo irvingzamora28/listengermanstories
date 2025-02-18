@@ -168,6 +168,49 @@ Run `node ./scripts/compose.js` to bootstrap a new story.
 
 Follow the interactive prompt to generate a story with pre-filled front matter.
 
+## Story Generation
+
+Generate German learning stories using AI with this command:
+
+```bash
+npm run generate-story -- --title "Your Story Title" --difficulty B1 --paragraphs 5
+```
+
+### Parameters:
+
+- `--title`: Required story title
+- `--difficulty`: Language level (A2, B1, B2) - Default: B1
+- `--paragraphs`: Number of paragraphs - Default: 5
+
+### Features:
+
+- Generates Markdown files in `/data/stories`
+- Creates companion vocabulary.json with word definitions
+- Uses Google's Gemini 2.0 Flash model
+- Automatic date formatting in front matter
+
+## Blog Post Generation
+
+Generate blog posts using AI with this command:
+
+```bash
+npm run generate-blog-post -- --title "Your Blog Post Title" --category "language-learning" --keywords "keyword1,keyword2" --useEmojis true --includeFaq true
+```
+
+### Parameters:
+
+- `--title` (required): Title of the blog post
+- `--category`: Category of the blog post (options: language-learning, german-culture, grammar-tips, vocabulary, learning-methods) - Default: language-learning
+- `--keywords`: Comma-separated keywords for SEO
+- `--useEmojis`: Include emojis in the blog post - Default: true
+- `--includeFaq`: Include a FAQ section in the blog post - Default: true
+
+### Features:
+
+- Generates Markdown files in `/data/blog`
+- Uses Google's Gemini AI for content generation
+- Automatic date formatting in front matter
+
 ## Contributing
 
 We welcome contributions! If you'd like to add a new story or improve the site, please follow these steps:
