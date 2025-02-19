@@ -1,0 +1,38 @@
+{
+  "language_code": "de",
+  "country_code": "DE",
+  "data": [
+    {
+      "text": "Ein kleiner Hund heißt Max. Er ist sehr klein. Lisa sagt: \"Hallo Max! Du bist jetzt zu Hause!\"",
+      "audio_file_name": "der-kleine-hund-max-1.mp3"
+    },
+    {
+      "text": "Max spielt mit einem Ball. Der Ball ist rot. Max bellt: \"Wau wau!\" Lisa lacht: \"Max, du bist so lustig!\"",
+      "audio_file_name": "der-kleine-hund-max-2.mp3"
+    },
+    {
+      "text": "Max hat Hunger. Er isst Futter aus einem Napf. Lisa sagt: \"Guten Appetit, Max!\" Max isst schnell.",
+      "audio_file_name": "der-kleine-hund-max-3.mp3"
+    },
+    {
+      "text": "Max ist müde. Er schläft in seinem Korb. Lisa sagt: \"Schlaf gut, kleiner Max!\" Max schnarcht leise.",
+      "audio_file_name": "der-kleine-hund-max-4.mp3"
+    },
+    {
+      "text": "Lisa und Max gehen spazieren. Sie gehen im Park. Lisa sagt: \"Komm, Max! Lauf!\" Max rennt schnell.",
+      "audio_file_name": "der-kleine-hund-max-5.mp3"
+    },
+    {
+      "text": "Max trifft einen anderen Hund. Der andere Hund heißt Bello. Bello bellt: \"Wau!\" Max bellt zurück: \"Wau!\"",
+      "audio_file_name": "der-kleine-hund-max-6.mp3"
+    },
+    {
+      "text": "Lisa bringt Max sitzen bei. Lisa sagt: \"Max, sitz!\" Max sitzt. Lisa gibt Max ein Leckerli. \"Bravo, Max!\"",
+      "audio_file_name": "der-kleine-hund-max-7.mp3"
+    },
+    {
+      "text": "Max ist sehr glücklich. Lisa und Max kuscheln. Lisa sagt: \"Ich liebe dich, Max!\" Max wedelt mit dem Schwanz.",
+      "audio_file_name": "der-kleine-hund-max-8.mp3"
+    }
+  ]
+}
