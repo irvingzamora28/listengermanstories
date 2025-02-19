@@ -280,11 +280,10 @@ Generate the complete MDX file content following this format exactly.`
     let chapterNum = 1
 
     // Create a prompt for generating image descriptions
-    const imagePrompt = `Create a detailed image prompt for a 3D animated scene from a children's story. The scene details are:
+    const imagePrompt = `Create a detailed image prompt for a 3D animated scene from a children's story. This prompt will be used to generate an image using Gemini. The scene details are:
 
 Chapter Title: $CHAPTER_TITLE
-Scene Description (German): $GERMAN_TEXT
-Scene Description (English): $ENGLISH_TEXT
+Scene Description: $GERMAN_TEXT
 
 Requirements:
 1. Style: 3D Animation similar to modern Pixar or Disney movies
