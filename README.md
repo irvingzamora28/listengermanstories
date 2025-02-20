@@ -246,6 +246,13 @@ We welcome contributions! If you'd like to add a new story or improve the site, 
 
 The easiest way to deploy the site is to use the [Vercel Platform](https://vercel.com) from the creators of Next.js. Check out the [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
+## TODOS
+
+#TODO - Remove PNG image after optimize
+#TODO - Improve image prompt generated to avoid including details about dialogs
+#TODO - Remove `mdx tags` from story generated content
+#TODO - Include mp3File attribute in the generated TextToSpeechPlayer component
+
 ## Support
 
 Using the template? Support this effort by giving a star on GitHub, sharing your own blog and giving a shoutout on Twitter or becoming a project [sponsor](https://github.com/sponsors/irvingzamora28).
