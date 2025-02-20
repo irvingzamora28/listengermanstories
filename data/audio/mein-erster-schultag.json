@@ -1,0 +1,30 @@
+{
+  "language_code": "de",
+  "country_code": "DE",
+  "data": [
+    {
+      "text": "Der Wecker klingelt. Anna ist sehr aufgeregt. Heute ist ihr erster Schultag! Mama sagt: \"Anna, aufwachen! Es ist Zeit für die Schule!\"",
+      "audio_file_name": "mein-erster-schultag-1.mp3"
+    },
+    {
+      "text": "Anna isst Frühstück. Sie hat ein Brot mit Marmelade. Papa fragt: \"Bist du bereit für die Schule, Anna?\" Anna antwortet: \"Ja, ich bin bereit!\"",
+      "audio_file_name": "mein-erster-schultag-2.mp3"
+    },
+    {
+      "text": "Anna und Mama gehen zur Schule. Sie sehen viele andere Kinder. Anna sagt: \"Mama, ich habe Angst!\" Mama sagt: \"Keine Angst, es wird schön!\"",
+      "audio_file_name": "mein-erster-schultag-3.mp3"
+    },
+    {
+      "text": "Im Klassenzimmer sind viele Tische und Stühle. Die Lehrerin sagt: \"Hallo, Kinder! Willkommen in der Schule!\" Anna ist ein bisschen schüchtern.",
+      "audio_file_name": "mein-erster-schultag-4.mp3"
+    },
+    {
+      "text": "Anna spielt mit anderen Kindern. Sie lernt einen neuen Freund kennen. Er heißt Tim. Tim sagt: \"Hallo, ich bin Tim! Willst du spielen?\"",
+      "audio_file_name": "mein-erster-schultag-5.mp3"
+    },
+    {
+      "text": "Der Schultag ist vorbei. Anna ist glücklich. Sie sagt zu Mama: \"Die Schule ist toll! Ich habe einen neuen Freund!\" Mama sagt: \"Das freut mich!\"",
+      "audio_file_name": "mein-erster-schultag-6.mp3"
+    }
+  ]
+}
