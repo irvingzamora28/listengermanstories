@@ -252,6 +252,8 @@ The easiest way to deploy the site is to use the [Vercel Platform](https://verce
 #TODO - Improve image prompt generated to avoid including details about dialogs
 #TODO - Remove `mdx tags` from story generated content
 #TODO - Include mp3File attribute in the generated TextToSpeechPlayer component
+#TODO - Generate a json schema for the FAQ of a blog post
+#TODO - Add more than one article to include in the generated blog content
 
 ## Support
 
