@@ -352,7 +352,7 @@ Provide only the image description, no additional text.`
 
       audioData.data.push({
         text: germanText,
-        audio_file_name: `${filename}-${chapterNum}.mp3`,
+        audio_file_name: `${filename}${chapterNum}.mp3`,
       })
       chapterNum++
     }
@@ -368,6 +368,7 @@ Provide only the image description, no additional text.`
     console.log(`\nStory generated successfully! 📚`)
     console.log(`MDX file saved to: ${outputPath}`)
     console.log(`Audio JSON file saved to: ${audioJsonPath}`)
+    console.log(`Image prompts saved to: ${imagePromptsPath}`)
     console.log(`File saved to: ${outputPath}`)
     console.log('\nNext steps:')
     console.log('1. Add the corresponding images to /static/images/')
