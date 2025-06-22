@@ -92,42 +92,6 @@ import TextToSpeechPlayer from './TextToSpeechPlayer.js'
   mp3File='/static/audio/magischer-schluessel-2.mp3'
 />
 
-## Kapitel 3: Die alte Truhe
-
-![Die alte Truhe](/static/images/magischer-schluessel-3.webp)
-
-<TextToSpeechPlayer
-  text="Auf dem **Spielplatz** entdeckten sie eine alte **Truhe**. Leo probierte den Schlüssel aus, und er passte! Die Truhe öffnete sich."
-  translation="At the **playground**, they discovered an old **chest**. Leo tried the key, and it fit! The chest opened."
-  mp3File='/static/audio/magischer-schluessel-3.mp3'
-/>
-
-## Kapitel 4: Ein magisches Buch
-
-<TextToSpeechPlayer
-  text="In der Truhe lag ein altes **Buch**. Als sie es öffneten, leuchteten die **Seiten** und zeigten ihnen einen geheimen **Pfad**."
-  translation="Inside the chest was an old **book**. When they opened it, the **pages** lit up and showed them a secret **path**."
-  mp3File='/static/audio/magischer-schluessel-4.mp3'
-/>
-
-## Kapitel 5: Das Abenteuer beginnt
-
-![Der geheime Pfad](/static/images/magischer-schluessel-4.webp)
-
-<TextToSpeechPlayer
-  text="Der Pfad führte sie zu einem verborgenen **Garten**. Dort trafen sie sprechende **Tiere** und magische **Pflanzen**."
-  translation="The path led them to a hidden **garden**. There, they met talking **animals** and magical **plants**."
-  mp3File='/static/audio/magischer-schluessel-5.mp3'
-/>
-
-## Kapitel 6: Eine unvergessliche Freundschaft
-
-<TextToSpeechPlayer
-  text="Leo und Mia erlebten viele aufregende Abenteuer. Sie lernten, dass **Freundschaft** und **Mut** die grössten **Schätze** sind."
-  translation="Leo and Mia experienced many exciting adventures. They learned that **friendship** and **courage** are the greatest **treasures**."
-  mp3File='/static/audio/magischer-schluessel-6.mp3'
-/>
-
 ## Vocabulary words (Gender, Word, Translation):
 
 - der **Dachboden** (Attic)
@@ -186,46 +150,6 @@ characters:
 
 All character descriptions must be in ENGLISH, even if the rest of the story is in German.
 
-    Example:
-    <TextToSpeechPlayer
-      text="Emma sagte: "Schau mal, eine **Katze**!""
-        translation="Emma said: "Look, a **cat**!""
-/>
-      />
-      
-      Make it engaging for learners.
-
-Example MDX format:
----
-title: Der Magische Garten
-date: '2024-01-15'
-description: 'Eine Geschichte über einen magischen Garten'
-difficulty: 'A1'
-featuredImage: '/images/stories/der-magische-garten.jpg'
-characters:
-  - name: Lisa
-    description: "Lisa, a curious girl with brown hair and green eyes."
-  - name: Felix
-    description: "Felix, a clever cat with gray fur and a playful attitude."
----
-
-# Der Magische Garten
-
-## Kapitel 1: Die Entdeckung
-
-![Ein kleiner Garten](/images/stories/der-magische-garten/chapter1.jpg)
-
-<TextToSpeechPlayer
-  text="Lisa entdeckte einen **Garten**. "Wow, was für ein schöner **Garten**!" sagte sie."
-  translation="Lisa discovered a **garden**. "Wow, what a beautiful **garden**!" she said."
-/>
-
-Example format:
-<TextToSpeechPlayer
-  text="Lisa sagte: "Schau mal, eine **Katze** im **Garten**!""
-  translation="Lisa said: "Look, a **cat** in the **garden**!""
-/>
-
 
 Key requirements:
 1. Include natural dialogue in each chapter
@@ -234,6 +158,7 @@ Key requirements:
    - Double quotes for spoken dialogue
 3. Bold (**) all important vocabulary words
 4. Make the story engaging for language learners
+5. Create a beginning, middle, and end to the story
    
 IMPORTANT FORMATTING RULES:
 1. Include dialogue in each chapter using proper quotes:
@@ -242,10 +167,6 @@ IMPORTANT FORMATTING RULES:
   Example:
       text='Emma fragte: "Wo ist deine **Katze**?" Tom antwortete: "Im **Garten**".'
   
-2. Bold important vocabulary words with ** in both languages
-3. Make sure dialogues are natural and engaging
-4. Never use curly quotes or other special quote characters
-      
 IMPORTANT FORMATTING RULES:
 1. In the TextToSpeechPlayer components:
   - Use single quotes (') for the component attributes
