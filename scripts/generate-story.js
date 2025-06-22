@@ -342,39 +342,38 @@ Generate the complete MDX file content following this format exactly.`
       }
     }
 
-    // Create a prompt for generating image descriptions
-    const imagePrompt = `Create a detailed image prompt for a 3D animated scene from a children's story. This prompt will be used to generate an image using Gemini. The scene details are:\n\n$CHARACTER_REFERENCE\nChapter Title: $CHAPTER_TITLE\nScene Description: $GERMAN_TEXT\n\nRequirements:\n1. Style: 3D Animation similar to modern Pixar or Disney movies\n2. Lighting: Bright and cheerful\n3. Detail: Include specific details about characters, expressions, and environment\n4. Mood: Friendly and inviting for children\n5. Color: Vibrant and engaging color palette\n\nProvide only the image description, no additional text.`
-
     // Prepare canonical character descriptions
-    const characterDescriptions = frontmatter && Array.isArray(frontmatter.characters) ? frontmatter.characters.map((c) => `${c.name}: ${c.description}`).join('\n') : ''
+    const allCharacterDescriptions = frontmatter && Array.isArray(frontmatter.characters) ? frontmatter.characters.map((c) => ({ name: c.name, description: c.description })) : []
 
     // Generate image prompts for each chapter using Gemini for detailed, vivid prompts
     for (const chapter of chapters) {
+      // Filter characters that appear in this chapter (in German/English text or title)
+      const chapterText = `${chapter.germanText} ${chapter.englishText} ${chapter.title}`.toLowerCase()
+      const includedCharacters = allCharacterDescriptions.filter((c) => chapterText.includes(c.name.toLowerCase()))
+      const filteredCharacterDescriptions = includedCharacters.map((c) => `${c.name}: ${c.description}`).join('\n')
+
       // Compose the LLM prompt for image description
-      const promptForLLM = `You are an expert visual storyteller for children's books. Given the following information, generate a vivid, detailed, and visually descriptive prompt for a 3D animated scene that can be used for AI image generation. The prompt should be in English, richly describing the scene, characters, setting, actions, mood, and important visual details. Do NOT invent new characters or change their appearance—use only the canonical descriptions provided.
+      const promptForLLM = `You are an expert visual storyteller for children's books. Given the following information, generate a vivid, detailed, and visually descriptive prompt for a 3D animated scene that can be used for AI image generation. The prompt should be in English, describing the scene, setting, actions, mood, and important visual details. Do NOT invent new characters or change their appearance—use only the canonical descriptions provided.
+      DO NOT BE TOO DETAILED. DESCRIBE THE MOST ICONIC OR REPRESENTATIVE MOMENT OF THE SCENE.
 
-Character Reference:
-${characterDescriptions}
 
-Chapter Title: ${chapter.title}
-Scene Description (in German): ${chapter.germanText}
+      Character Reference:
+      ${filteredCharacterDescriptions}
 
-Requirements:
-- Style: 3D Animation similar to modern Pixar or Disney movies
-- Lighting: Bright and cheerful
-- Detail: Include specific details about characters, expressions, and environment
-- Mood: Friendly and inviting for children
-- Color: Vibrant and engaging color palette
+      Chapter Title: ${chapter.title}
+      Scene Description: ${chapter.englishText}
 
-Provide only the image prompt in English, no additional explanation or text.`
+      Requirements:
+      - Style: 3D Animation similar to modern Pixar or Disney movies
+      - Lighting: Bright and cheerful
+
+      Provide only the image prompt in English, no additional explanation or text.`
 
       // Generate the detailed image prompt using Gemini
       let imagePromptText = ''
       try {
         const result = await model.generateContent(promptForLLM)
-        imagePromptText = `Character Reference:
-        ${characterDescriptions}
-        ${result.response.text().trim()}`
+        imagePromptText = `Character Reference:\n${filteredCharacterDescriptions}\n${result.response.text().trim()}`
       } catch (err) {
         console.error('Error generating image prompt for chapter', chapter.number, err)
         imagePromptText = '[ERROR: Failed to generate image prompt]'
