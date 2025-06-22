@@ -294,7 +294,10 @@ Generate the complete MDX file content following this format exactly.`
       let imagePromptText = ''
       try {
         const result = await model.generateContent(promptForLLM)
-        imagePromptText = `Character Reference:\n${filteredCharacterDescriptions}\n${result.response.text().trim()}`
+        imagePromptText = `Character Reference:\n${filteredCharacterDescriptions}\n
+        Requirements:\n
+      - Style: 3D Animation similar to modern Pixar or Disney movies\n
+      - Lighting: Bright and cheerful\n${result.response.text().trim()}`
       } catch (err) {
         console.error('Error generating image prompt for chapter', chapter.number, err)
         imagePromptText = '[ERROR: Failed to generate image prompt]'
