@@ -11,12 +11,12 @@ const GeneralLayoutWrapper = ({ children }) => {
   return (
     <SectionContainer>
       <div className="flex h-screen flex-col justify-between">
-        <header className="flex items-center justify-between p-10">
+        <header className="flex items-center justify-between p-2">
           <div>
             <Link href="/" aria-label={siteMetadata.headerTitle}>
               <div className="flex items-center justify-between">
-                <div className="mr-3">
-                  <Image src="/static/images/logo.webp" width={150} height={150} alt="Listen German Stories" />
+                <div className="mr-3 mt-1 p-2">
+                  <Image src="/static/images/logo.webp" width={48} height={48} alt="Listen German Stories" />
                 </div>
               </div>
             </Link>

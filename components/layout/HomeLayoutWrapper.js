@@ -29,8 +29,11 @@ const HomeLayoutWrapper = ({ children }) => {
             <div>
               <Link href="/" aria-label={siteMetadata.headerTitle}>
                 <div className="flex items-center justify-between">
-                  <div className="mr-3">
-                    <Image src="/static/images/logo.webp" width={150} height={150} alt="Listen German Stories" />
+                  <div className="p-4 md:hidden">
+                    <Image src="/static/images/logo.webp" width={64} height={64} alt="Listen German Stories" />
+                  </div>
+                  <div className="hidden p-4 md:block">
+                    <Image src="/static/images/logo.webp" width={128} height={128} alt="Listen German Stories" />
                   </div>
                 </div>
               </Link>
