@@ -137,6 +137,8 @@ characters:
   - name: Oskar
     description: "Oskar is a plump, orange-scaled dragon with a big round belly that wobbles when he laughs. He has short, stubby legs, tiny wings that can barely lift him off the ground, and a perpetual look of cheerful hunger in his deep brown eyes. Oskar often wears a green backpack stuffed with snacks, and his laughter is loud and infectious. He is loyal, good-natured, and always thinking about his next meal, but he would never let his friends go hungry."
 
+    **IMPORTANT:** DO NOT USE ANY CHILDREN AS CHARACTERS, even if the story is about children. Children are not allowed as characters, NO BOYS, NO GIRLS, NO KIDS.
+
     **IMPORTANT MDX/JSX FORMATTING:**
     - Always use double quotes for all attribute values in JSX/MDX components, e.g. <TextToSpeechPlayer text="..." translation="..." />.
     - If the text contains a double quote, escape it as " (e.g., text="Kokosnuss says: "Hallo!"").

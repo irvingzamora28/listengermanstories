@@ -189,6 +189,55 @@ npm run generate-story -- --title "Your Story Title" --difficulty B1 --paragraph
 - Uses Google's Gemini 2.0 Flash model
 - Automatic date formatting in front matter
 
+## Image Generation
+
+After generating a story, you can create AI-generated images for each chapter using this command:
+
+```bash
+node scripts/generate-images.js --promptFile "data/images/your-story-title-image-prompts.json"
+```
+
+### Parameters:
+
+- `--promptFile` or `-p`: Path to the JSON file containing image prompts (required)
+
+### Prerequisites:
+
+- Set the `GEMINI_API_KEY` environment variable in your `.env` file
+- The prompt file is automatically created when you generate a story
+
+### Features:
+
+- Generates images for each chapter based on the story content
+- Uses Google's Gemini 2.0 Flash model for image generation
+- Automatically saves images as WebP format in the correct location
+- Images are optimized for web display
+
+## Audio Generation
+
+Generate text-to-speech audio files for your stories using this command:
+
+```bash
+node scripts/generate-audio.js --inputFile "data/audio/your-story-title.json"
+```
+
+### Parameters:
+
+- `--inputFile` or `-i`: Path to the JSON file containing audio text data (required)
+
+### Prerequisites:
+
+- Set the `GEMINI_API_KEY` environment variable in your `.env` file
+- The audio JSON file is automatically created when you generate a story
+- Ensure ffmpeg is installed on your system for MP3 conversion
+
+### Features:
+
+- Generates high-quality text-to-speech audio for each chapter
+- Uses Google's Gemini 2.5 Flash TTS model with the 'Puck' voice
+- Automatically converts audio to MP3 format for better compatibility
+- Saves files to the correct location in your project structure
+
 ## Image Optimization
 
 Optimize and convert images to WebP format using this command:
