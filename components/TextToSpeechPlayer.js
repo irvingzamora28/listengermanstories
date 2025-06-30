@@ -242,7 +242,7 @@ const TextToSpeechPlayer = ({ text, translation = '', mp3File }) => {
   return (
     <div className="max-w-8xl mx-auto space-y-4 p-0">
       {/* Text Content */}
-      <p className="text-base leading-relaxed">
+      <p className="text-lg leading-relaxed">
         {sentences.map((sentence, index) => {
           const parsedSentence = sentence.replace(/\*\*(.*?)\*\*/g, '<code>$1</code>')
           return (
@@ -269,7 +269,7 @@ const TextToSpeechPlayer = ({ text, translation = '', mp3File }) => {
       </p>
 
       {/* Translation Panel */}
-      {showTranslation && <div className="border-l-2 border-primary-500 bg-gray-50 py-1 pl-2 text-sm italic dark:bg-gray-800" dangerouslySetInnerHTML={{ __html: parsedTranslation }} />}
+      {showTranslation && <div className="border-l-2 border-primary-500 bg-gray-50 py-1 pl-2 text-lg italic dark:bg-gray-800" dangerouslySetInnerHTML={{ __html: parsedTranslation }} />}
 
       {/* Compact Audio Controls */}
       <div className="flex flex-col gap-2">
