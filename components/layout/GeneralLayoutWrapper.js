@@ -29,7 +29,7 @@ const GeneralLayoutWrapper = ({ children }) => {
                 </Link>
               ))}
             </div>
-            <ThemeSwitch />
+            <ThemeSwitch textColor="text-gray-900 dark:text-gray-100" />
             <MobileNav />
           </div>
         </header>
