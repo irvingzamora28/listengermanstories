@@ -43,10 +43,25 @@ export async function getStaticProps({ params }) {
 export default function Blog({ post, authorDetails, prev, next }) {
   const { mdxSource, toc, frontMatter } = post
 
+  // Extract all mp3File values from the compiled MDX source string
+  const audioPaths = []
+  try {
+    // Regex for compiled React code
+    const regex = /mp3File:"([^"]+)"/g
+    let match
+    while ((match = regex.exec(mdxSource)) !== null) {
+      audioPaths.push(match[1])
+    }
+  } catch (e) {
+    if (typeof window !== 'undefined') {
+      console.error('[Blog] Error extracting audioPaths:', e)
+    }
+  }
+
   return (
     <>
       {frontMatter.draft !== true ? (
-        <MDXLayoutRenderer layout={frontMatter.layout || DEFAULT_LAYOUT} toc={toc} mdxSource={mdxSource} frontMatter={frontMatter} authorDetails={authorDetails} prev={prev} next={next} />
+        <MDXLayoutRenderer layout={frontMatter.layout || DEFAULT_LAYOUT} toc={toc} mdxSource={mdxSource} frontMatter={frontMatter} authorDetails={authorDetails} prev={prev} next={next} audioPaths={audioPaths} />
       ) : (
         <div className="mt-24 text-center">
           <PageTitle>

@@ -12,7 +12,9 @@ const editUrl = (fileName) => `${siteMetadata.siteRepo}/blob/master/data/story/$
 
 const postDateTemplate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
 
-export default function PostLayout({ frontMatter, authorDetails, next, prev, children }) {
+import PlayAllAudios from '@/components/PlayAllAudios'
+
+export default function PostLayout({ frontMatter, authorDetails, next, prev, children, audioPaths }) {
   const { slug, fileName, date, title, images, tags } = frontMatter
 
   return (
@@ -54,6 +56,7 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
               </dd>
             </dl>
             <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
+              {audioPaths && audioPaths.length > 0 && <PlayAllAudios audioPaths={audioPaths} />}
               <div className="prose max-w-none pb-8 pt-10 dark:prose-dark">{children}</div>
               <Comments frontMatter={frontMatter} />
             </div>
