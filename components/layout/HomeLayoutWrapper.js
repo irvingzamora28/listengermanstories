@@ -24,24 +24,25 @@ const HomeLayoutWrapper = ({ children }) => {
   return (
     <SectionContainer>
       <div className="relative">
-        <div className="absolute z-10 w-full">
-          <header className="flex items-center justify-between">
+        <div className="sticky top-0 z-20 bg-gradient-to-r from-black via-red-600 to-yellow-500 shadow-md">
+          <header className="flex items-center justify-between px-4 py-2">
             <div>
               <Link href="/" aria-label={siteMetadata.headerTitle}>
                 <div className="flex items-center justify-between">
-                  <div className="p-4 md:hidden">
+                  <div className="py-2 md:hidden">
+                    <Image src="/static/images/logo.webp" width={48} height={48} alt="Listen German Stories" />
+                  </div>
+                  <div className="hidden py-2 md:block">
                     <Image src="/static/images/logo.webp" width={64} height={64} alt="Listen German Stories" />
                   </div>
-                  <div className="hidden p-4 md:block">
-                    <Image src="/static/images/logo.webp" width={128} height={128} alt="Listen German Stories" />
-                  </div>
+                  <span className="ml-2 text-xl font-bold text-white">Listen German Stories</span>
                 </div>
               </Link>
             </div>
             <div className="flex items-center text-base leading-5">
               <div className="hidden sm:block">
                 {headerNavLinks.map((link) => (
-                  <Link key={link.title} href={link.href} className="text-shadow p-1 text-xl font-medium text-white sm:p-4">
+                  <Link key={link.title} href={link.href} className="p-1 text-lg font-medium text-white hover:text-gray-200 sm:p-3">
                     {link.title}
                   </Link>
                 ))}
@@ -52,17 +53,6 @@ const HomeLayoutWrapper = ({ children }) => {
           </header>
         </div>
         <div className="relative z-0">
-          <div className="relative h-[400px] w-full overflow-hidden">
-            <div ref={parallaxRef} className="absolute inset-0 h-[150%]">
-              <Image className="object-cover" src="/static/images/hero-image.webp" layout="fill" objectFit="cover" quality={100} alt="Hero Background" />
-              <div className="absolute inset-0 bg-black opacity-20 dark:opacity-80"></div>
-              <div className="absolute inset-0 flex items-center justify-center text-center text-6xl font-bold text-white">
-                <span className="">
-                  <span className="text-shadow-lg text-3xl dark:text-slate-300 md:text-5xl">Listen German Stories</span>
-                </span>
-              </div>
-            </div>
-          </div>
           <div className="relative">
             <main className="mb-auto">{children}</main>
             <Footer />

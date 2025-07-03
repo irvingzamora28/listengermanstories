@@ -22,7 +22,7 @@ module.exports = {
         sans: ['InterVariable', ...defaultTheme.fontFamily.sans],
       },
       colors: {
-        primary: colors.rose,
+        primary: colors.yellow,
         gray: colors.neutral,
       },
       typography: (theme) => ({
