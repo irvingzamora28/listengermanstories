@@ -187,24 +187,45 @@ async function generateBlogPost() {
       *   Ensure proper meta information in the frontmatter (title, date, lastmod, tags, summary, images).
       *   Surround all frontmatter values with double quotes.
       *   Use clear and concise markdown formatting for headings, lists (numbered and bulleted), bold text, and tables.
+      *   The following custom components are available to enrich the post. Only use them when they are relevant, add value, and make sense in context. Do NOT force every component into every section.
+      *   Example usages are provided below. Use these components naturally, where appropriate:
+
+      **Component Usage Examples:**
+
+      - <Callout type="info" title="Did you know?">German is the most widely spoken native language in Europe!</Callout>
+      - <Callout type="tip" title="Tip">Practice a little every day for the best results.</Callout>
+      - <Callout type="warning" title="Warning">Don't skip pronunciation practice!</Callout>
+      - <Callout type="danger" title="Common Mistake">Avoid direct translation from your native language.</Callout>
+      - <Blockquote author="Goethe">Wer nichts für andere tut, tut nichts für sich.</Blockquote>
+      - <ResourceCard title="Duolingo" url="https://duolingo.com" image="/static/images/duolingo.png" description="A fun and gamified way to learn German." />
+      - <Glossary term="Akkusativ">The accusative case, used for direct objects in German.</Glossary>
+      - <StepList steps={["Download a language app.", "Practice daily.", "Join a language exchange."]} />
+      - <FAQ question="What is the best way to practice speaking?">Try language exchange meetups or online partners.</FAQ>
+
+      *   Do not use all components in every section. Use them only where they fit the content and enhance clarity or engagement.
 
       **Content and Structure:**
       *   Include a compelling introduction, well-structured main content with multiple subheadings, and a satisfying conclusion.
-      *   Break up large blocks of text with lists, tables, and visuals to improve readability.
-      *   **Actively use tables and lists (both ordered and unordered) to organize ideas and information clearly. Aim to have at least one table or list in each major section of the blog post.**
+      *   Break up large blocks of text with lists, visuals, and custom components to improve readability.
+      *   **Actively use the provided custom components (Callout, Blockquote, ResourceCard, Glossary, StepList, Tip, FAQ) and lists (both ordered and unordered) to organize ideas and information clearly. Aim to include at least one of these components in each major section of the blog post.**
       *   Incorporate the following keywords naturally for SEO optimization: ${keywords.join(', ')}.
       *   Provide factually accurate and helpful information for German learners of all levels.
       *   Include practical tips, actionable advice, and concrete examples in each main section.
       *   Suggest relevant internal links to other blog posts on the site where appropriate.
-      *   Offer diverse resources (websites, apps, books, podcasts) that can help learners on their journey
-      *   Highlight the benefits of using various methods
+      *   Offer diverse resources (websites, apps, books, podcasts) that can help learners on their journey.
+      *   Highlight the benefits of using various methods.
 
       **FAQ Section (Conditionally Included):**
-      *   **${argv.includeFaq ? 'Include a FAQ section at the end with at least 3-5 frequently asked questions related to the topic. Provide clear and concise answers.' : 'Do not include a FAQ section.'}**
+      *   **${
+        argv.includeFaq
+          ? `Include a FAQ section at the end with at least 3-5 frequently asked questions related to the topic. Provide clear and concise answers.
       *   Structure each FAQ item using this format (replace content with questions related to blog post topic):
       \`\`\`
       <FAQ question="[Question]">Answer to the question.</FAQ>
       \`\`\`
+      `
+          : 'Do not include a FAQ section.'
+      }
 
       **Topic:** ${argv.title}
       **Category:** ${argv.category}
@@ -228,11 +249,11 @@ async function generateBlogPost() {
 
       ## Section 1: [Main Point]
 
-      [Detailed explanation with examples and practical tips. Include a table or list here.]
+      [Detailed explanation with examples and practical tips. Use custom components only where relevant.]
 
       ## Section 2: [Another Main Point]
 
-      [Detailed explanation with examples and practical tips. Include a table or list here.]
+      [Detailed explanation with examples and practical tips.]
 
       ... (More sections as needed)
 
