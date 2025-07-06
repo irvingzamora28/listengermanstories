@@ -16,7 +16,7 @@ export default function InfographicChart({ type = 'bar', data = [], dataKey, tit
   const containerHeight = typeof height === 'number' ? height : 360
 
   return (
-    <div className="mx-auto my-10 max-w-2xl rounded-3xl border border-gray-200 bg-white shadow-xl dark:border-gray-800 dark:bg-gray-950" style={{ width: width, height: containerHeight + 80 }}>
+    <div className="mx-auto my-20 max-w-2xl rounded-3xl border border-gray-200 bg-white shadow-xl dark:border-gray-800 dark:bg-gray-950" style={{ width: width, height: containerHeight + 80 }}>
       {title && (
         <div className="flex items-center gap-3 rounded-t-3xl bg-gradient-to-r from-blue-400 to-cyan-400 px-8 py-5 text-xl font-extrabold text-blue-900 drop-shadow dark:text-blue-200">
           <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/60 text-2xl dark:bg-gray-950/70">

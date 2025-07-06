@@ -138,6 +138,19 @@ async function findRelatedPosts(tags, category, currentFilename) {
   return relatedPosts.sort((a, b) => b.matchScore - a.matchScore).slice(0, 3)
 }
 
+function setFrontmatterDate(mdx, dateStr) {
+  return mdx.replace(/---([\s\S]*?)---/, (match, fm) => {
+    let newFm = fm
+      .replace(/date:[^\n]*\n?/, '')
+      .replace(/lastmod:[^\n]*\n?/, '')
+      .replace(/---$/, '')
+      .trim()
+    newFm = `date: '${dateStr}'\nlastmod: '${dateStr}'\n` + newFm
+    // Remove extra leading/trailing newlines
+    return `---\n${newFm}\n---`
+  })
+}
+
 async function generateBlogPost() {
   try {
     console.log('Starting blog post generation process...')
@@ -296,6 +309,10 @@ async function generateBlogPost() {
 
 ${relatedPosts.map((post) => `<RelatedPost href="/blog/${post.slug}" title="${post.title}" summary="${post.summary}" />`).join('\n')}`
         : ''
+
+    // Use current date in YYYY-MM-DD format
+    const today = new Date().toISOString().slice(0, 10)
+    blogContent = setFrontmatterDate(blogContent, today)
 
     // Write the initial content to the file (before enhancement)
     await fs.mkdir(blogDir, { recursive: true })
