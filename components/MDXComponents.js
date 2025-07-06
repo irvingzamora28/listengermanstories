@@ -19,6 +19,7 @@ import Accordion from './Accordion'
 import InfographicTable from './InfographicTable'
 import InfographicChart from './InfographicChart'
 import Grid from './Grid'
+import GermanGrammarExplorer from './GermanGrammarExplorer'
 
 export const MDXComponents = {
   Image,
@@ -37,6 +38,7 @@ export const MDXComponents = {
   ResourceCard: ResourceCard,
   InfographicTable: InfographicTable,
   InfographicChart: InfographicChart,
+  GermanGrammarExplorer: GermanGrammarExplorer,
   Accordion: Accordion,
   Grid: Grid,
   wrapper: ({ components, layout, ...rest }) => {

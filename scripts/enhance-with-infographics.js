@@ -65,8 +65,35 @@ async function enhanceWithInfographics({ inputPath, outputPath }) {
 />
 
 ---
+**GermanGrammarExplorer**
+- Use for deep, interactive grammar explanations, rules, examples, tips, and practice questions—especially for the following topics:
+  - German articles and gender system
+  - Case declensions and usage
+  - Verb conjugations and tenses
+  - German word order rules
+  - Compound words and grammar patterns
+- Props (object spread):
+  - \`title\`: Title of the grammar concept
+  - \`concept\`: Short summary of the focus
+  - \`difficulty\`: e.g. "beginner", "intermediate", "advanced"
+  - \`examples\`: Array of example sentences with German/English, gender/case/notes
+  - \`rules\`: Array of rule objects (title, description, examples, exceptions)
+  - \`tips\`: Array of tips (title/content)
+  - \`practice\`: Array of practice questions (type, question, options, answer, explanation)
+- Example usage:
+<GermanGrammarExplorer
+  title="Der, Die, Das - German Articles"
+  concept="Mastering German definite articles and their relationship with noun genders"
+  difficulty="intermediate"
+  examples={[{ german: "Der Mann liest ein Buch.", english: "The man is reading a book.", gender: "der", case: "Nominativ", note: "Mann is masculine, so we use 'der'" }]}
+  rules={[{ title: "Masculine Nouns (der)", description: "Masculine nouns typically include male people, animals, days of the week, months, seasons, and many nouns ending in -er, -en, -el.", examples: [{ german: "der Vater", english: "the father" }], exceptions: ["das Mädchen (girl) - neuter despite being female"] }]}
+  tips={[{ title: "Memorize with Color Coding", content: "Use blue for der (masculine), red for die (feminine), and green for das (neuter). This visual association helps with memorization." }]}
+  practice={[{ type: "Article Selection", question: "Choose the correct article: ___ Hund bellt laut.", options: ["der", "die", "das"], answer: "der", explanation: "Hund (dog) is masculine, so we use 'der'." }]}
+/>
 
-Your task: Review the following MDX blog post section by section. Insert <InfographicTable /> or <InfographicChart /> components ONLY in sections where a visual infographic would provide significant additional value, such as for complex data, comparisons, or trends that are hard to grasp with text alone. If a section is clear and effective as plain text, DO NOT add any infographic. If no section benefits from an infographic, do not add any. Do NOT add infographics just for decoration or variety. If you add an infographic, ensure it is contextually relevant and not redundant with the surrounding explanation. Use only valid MDX. Do not alter the meaning or structure of the original content except for inserting infographics where appropriate.\n\nHere is the blog post:\n\n${mdxContent}`
+---
+
+Your task: Review the following MDX blog post section by section. Insert <InfographicTable /> , <InfographicChart /> or <GermanGrammarExplorer /> components ONLY in sections where a visual infographic would provide significant additional value, such as for complex data, comparisons, or trends that are hard to grasp with text alone. If a section is clear and effective as plain text, DO NOT add any infographic. If no section benefits from an infographic, do not add any. Do NOT add infographics or grammar explorer just for decoration or variety. If you add an infographic, ensure it is contextually relevant and not redundant with the surrounding explanation. Use only valid MDX. Do not alter the meaning or structure of the original content except for inserting infographics where appropriate.\n\nHere is the blog post:\n\n${mdxContent}`
 
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' })
     const result = await model.generateContent(prompt)
