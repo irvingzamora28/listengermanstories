@@ -197,12 +197,20 @@ async function generateBlogPost() {
       - <Callout type="warning" title="Warning">Don't skip pronunciation practice!</Callout>
       - <Callout type="danger" title="Common Mistake">Avoid direct translation from your native language.</Callout>
       - <Blockquote author="Goethe">Wer nichts für andere tut, tut nichts für sich.</Blockquote>
-      - <ResourceCard title="Duolingo" url="https://duolingo.com" image="/static/images/duolingo.png" description="A fun and gamified way to learn German." />
+      - <ResourceCard title="Duolingo" url="https://duolingo.com" image="/static/images/blog/duolingo.png" description="A fun and gamified way to learn German." />
       - <Glossary term="Akkusativ">The accusative case, used for direct objects in German.</Glossary>
       - <StepList steps={["Download a language app.", "Practice daily.", "Join a language exchange."]} />
       - <FAQ question="What is the best way to practice speaking?">Try language exchange meetups or online partners.</FAQ>
+      - <Accordion title="What is the Akkusativ case?">The Akkusativ is the accusative case in German, used for direct objects...</Accordion>
+      - <Grid columns={2}>
+          <div>Practice speaking German every day, even if just to yourself.</div>
+          <ResourceCard ... />
+          <Callout type="info" title="Did you know?">You can combine normal text and different components inside a grid for a more dynamic layout.</Callout>
+          <ul><li>Listen to German podcasts</li><li>Watch German movies</li></ul>
+        </Grid>
 
       *   Do not use all components in every section. Use them only where they fit the content and enhance clarity or engagement.
+      *   The Grid component is a flexible layout tool—use it to arrange any combination of components (ResourceCard, Callout, StepList, Blockquote, etc.) and/or normal text (paragraphs, lists, tips, etc.) in a visually appealing grid, not just components.
 
       **Content and Structure:**
       *   Include a compelling introduction, well-structured main content with multiple subheadings, and a satisfying conclusion.
@@ -220,9 +228,7 @@ async function generateBlogPost() {
         argv.includeFaq
           ? `Include a FAQ section at the end with at least 3-5 frequently asked questions related to the topic. Provide clear and concise answers.
       *   Structure each FAQ item using this format (replace content with questions related to blog post topic):
-      \`\`\`
       <FAQ question="[Question]">Answer to the question.</FAQ>
-      \`\`\`
       `
           : 'Do not include a FAQ section.'
       }

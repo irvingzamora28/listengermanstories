@@ -15,6 +15,8 @@ import Blockquote from './Blockquote'
 import Glossary from './Glossary'
 import StepList from './StepList'
 import ResourceCard from './ResourceCard'
+import Accordion from './Accordion'
+import Grid from './Grid'
 
 export const MDXComponents = {
   Image,
@@ -31,6 +33,8 @@ export const MDXComponents = {
   Glossary: Glossary,
   StepList: StepList,
   ResourceCard: ResourceCard,
+  Accordion: Accordion,
+  Grid: Grid,
   wrapper: ({ components, layout, ...rest }) => {
     const Layout = require(`../layouts/${layout}`).default
     return <Layout {...rest} />
