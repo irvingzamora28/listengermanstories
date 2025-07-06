@@ -60,7 +60,7 @@ async function generateStory() {
     const outputPath = path.join(__dirname, '..', 'data', 'stories', `${filename}.mdx`)
 
     // Initialize the model
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' })
 
     const exampleStory = `---
 title: 'Der magische Schlüssel'

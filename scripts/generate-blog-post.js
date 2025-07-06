@@ -149,7 +149,7 @@ async function generateBlogPost() {
     const currentDate = new Date().toISOString().split('T')[0]
 
     // Initialize the model
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' })
 
     // Prepare keywords for the prompt
     const keywords = argv.keywords ? argv.keywords.split(',').map((k) => k.trim()) : []
@@ -297,15 +297,22 @@ async function generateBlogPost() {
 ${relatedPosts.map((post) => `<RelatedPost href="/blog/${post.slug}" title="${post.title}" summary="${post.summary}" />`).join('\n')}`
         : ''
 
-    // Write the content to the file with related posts appended
+    // Write the initial content to the file (before enhancement)
     await fs.mkdir(blogDir, { recursive: true })
-
-    // Remove ```mdx from the beginning of the content and ``` from the end
     blogContent = blogContent.replace('```mdx\n---', '---')
     blogContent = blogContent.replace('```', '')
     await fs.writeFile(outputPath, blogContent + relatedPostsSection, 'utf8')
 
-    console.log(`✅ Blog post generated successfully at: ${outputPath}`)
+    // --- Enhance with infographics automatically ---
+    const { enhanceWithInfographics } = require('./enhance-with-infographics')
+    // Use a temp file for enhancement, then overwrite the original
+    const tmpPath = outputPath + '.tmp'
+    await enhanceWithInfographics({ inputPath: outputPath, outputPath: tmpPath })
+    // Overwrite the original file with the enhanced content
+    const enhancedContent = await fs.readFile(tmpPath, 'utf8')
+    await fs.writeFile(outputPath, enhancedContent, 'utf8')
+    await fs.unlink(tmpPath)
+    console.log(`✅ Blog post enhanced with infographics and saved to: ${outputPath}`)
   } catch (error) {
     console.error('Error generating blog post:', error)
     process.exit(1)

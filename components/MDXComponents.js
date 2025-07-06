@@ -16,6 +16,8 @@ import Glossary from './Glossary'
 import StepList from './StepList'
 import ResourceCard from './ResourceCard'
 import Accordion from './Accordion'
+import InfographicTable from './InfographicTable'
+import InfographicChart from './InfographicChart'
 import Grid from './Grid'
 
 export const MDXComponents = {
@@ -33,6 +35,8 @@ export const MDXComponents = {
   Glossary: Glossary,
   StepList: StepList,
   ResourceCard: ResourceCard,
+  InfographicTable: InfographicTable,
+  InfographicChart: InfographicChart,
   Accordion: Accordion,
   Grid: Grid,
   wrapper: ({ components, layout, ...rest }) => {
