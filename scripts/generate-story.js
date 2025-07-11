@@ -35,6 +35,12 @@ const argv = yargs(hideBin(process.argv))
     type: 'number',
     default: 6,
   })
+  .option('autoGenerate', {
+    alias: 'a',
+    description: 'Automatically generate images and audio after story generation',
+    type: 'boolean',
+    default: false,
+  })
   .help()
   .alias('help', 'h').argv
 const currentDate = new Date().toISOString().split('T')[0]
@@ -364,6 +370,38 @@ Generate the complete MDX file content following this format exactly.`
     console.log('1. Add the corresponding images to /static/images/')
     console.log('2. Generate audio files for each chapter')
     console.log('3. Review and edit the content as needed')
+
+    if (argv.autoGenerate) {
+      console.log('\nAutomatically generating images and audio...')
+      const { exec } = require('child_process')
+
+      const imageCommand = `node ${path.join(__dirname, 'generate-images.js')} --promptFile "${imagePromptsPath}"`
+      const audioCommand = `node ${path.join(__dirname, 'generate-audio.js')} --inputFile "${audioJsonPath}"`
+
+      exec(imageCommand, (error, stdout, stderr) => {
+        if (error) {
+          console.error(`Error generating images: ${error.message}`)
+          return
+        }
+        if (stderr) {
+          console.error(`Image generation stderr: ${stderr}`)
+          return
+        }
+        console.log(`Image generation stdout: ${stdout}`)
+      })
+
+      exec(audioCommand, (error, stdout, stderr) => {
+        if (error) {
+          console.error(`Error generating audio: ${error.message}`)
+          return
+        }
+        if (stderr) {
+          console.error(`Audio generation stderr: ${stderr}`)
+          return
+        }
+        console.log(`Audio generation stdout: ${stdout}`)
+      })
+    }
   } catch (error) {
     console.error('Error generating story:', error.message)
     if (error.stack) {
