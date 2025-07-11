@@ -121,11 +121,56 @@ async function processAudioPrompts() {
       console.log(`\n[${idx + 1}/${data.length}] Generating audio for: ${audio_file_name}`)
       try {
         const base64Audio = await generateAudio(text)
-        // Save as MP3 (keep .mp3 extension)
         const fileName = audio_file_name.replace(/\.wav$/i, '.mp3')
         const outputPath = path.join(process.cwd(), 'public', 'static', 'audio', fileName)
         await saveMp3File(base64Audio, outputPath)
         console.log(`Audio saved to ${outputPath}`)
+
+        // --- Update the corresponding .mdx file ---
+        const audioPrefix = fileName
+          .replace(/\d+\.mp3$/, '')
+          .replace(/\.mp3$/, '')
+          .replace(/-\$/, '')
+          .replace(/_\$/, '')
+        const mdxDir = path.join(process.cwd(), 'data', 'stories')
+        const mdxFiles = await fs.readdir(mdxDir)
+        const targetMdx = mdxFiles.find((f) => f.endsWith('.mdx') && f.startsWith(audioPrefix))
+
+        if (targetMdx) {
+          const mdxPath = path.join(mdxDir, targetMdx)
+          let mdxContent = await fs.readFile(mdxPath, 'utf8')
+          let changed = false
+
+          const correctMp3Path = `/static/audio/${fileName}`
+          // Robustly match all <TextToSpeechPlayer ... /> blocks, even multi-line
+          const ttsBlockRegex = /<TextToSpeechPlayer[\s\S]*?\/>/g
+          let ttsBlocks = [...mdxContent.matchAll(ttsBlockRegex)]
+          const matchNum = fileName.match(/(\d+)\.mp3$/)
+          if (matchNum) {
+            const blockIndex = parseInt(matchNum[1], 10) - 1
+            if (blockIndex >= 0 && blockIndex < ttsBlocks.length) {
+              const originalBlock = ttsBlocks[blockIndex][0]
+              // Replace or insert mp3File property (handles single/double quotes, any order)
+              let newBlock
+              if (/mp3File\s*=/.test(originalBlock)) {
+                // Replace the mp3File property value (single/double quotes, with or without braces)
+                newBlock = originalBlock.replace(/mp3File\s*=\s*(?:\{)?(['"])[^'"}]*\1(\})?/, `mp3File='${correctMp3Path}'`)
+              } else {
+                // Insert mp3File property before closing
+                newBlock = originalBlock.replace(/\/>$/, ` mp3File='${correctMp3Path}' />`)
+              }
+              if (originalBlock !== newBlock) {
+                mdxContent = mdxContent.replace(originalBlock, newBlock)
+                changed = true
+              }
+            }
+          }
+
+          if (changed) {
+            await fs.writeFile(mdxPath, mdxContent, 'utf8')
+            console.log(`[AUDIO-DEBUG] Updated mp3File property in ${mdxPath}`)
+          }
+        }
       } catch (err) {
         console.error(`Failed to generate audio for ${audio_file_name}:`, err.message)
       }
