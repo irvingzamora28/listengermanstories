@@ -92,7 +92,8 @@ async function processImagePrompts() {
     console.log(`Processing images for story: ${story_title}`)
 
     for (const imageData of images) {
-      const { chapter_number, prompt, image_path } = imageData
+      let { chapter_number, prompt, image_path } = imageData
+      image_path = image_path.trim()
       console.log(`\nGenerating image for Chapter ${chapter_number}...`)
 
       const base64Image = await generateImage(prompt)
