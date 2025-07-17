@@ -278,7 +278,10 @@ Generate the complete MDX file content following this format exactly.`
     for (const chapter of chapters) {
       // Filter characters that appear in this chapter (in German/English text or title)
       const chapterText = `${chapter.germanText} ${chapter.englishText} ${chapter.title}`.toLowerCase()
-      const includedCharacters = allCharacterDescriptions.filter((c) => chapterText.includes(c.name.toLowerCase()))
+      const includedCharacters = allCharacterDescriptions.filter((c) => {
+        const nameWords = c.name.split(/\s+/).map((w) => w.toLowerCase())
+        return nameWords.some((word) => chapterText.includes(word))
+      })
       const filteredCharacterDescriptions = includedCharacters.map((c) => `${c.name}: ${c.description}`).join('\n')
 
       // Compose the LLM prompt for image description
