@@ -18,12 +18,16 @@ module.exports = {
         13: '3.25rem',
         14: '3.5rem',
       },
+
+      colors: {
+        primary: colors.amber,
+        secondary: colors.red,
+        accent: colors.slate,
+        gray: colors.neutral,
+      },
       fontFamily: {
         sans: ['InterVariable', ...defaultTheme.fontFamily.sans],
-      },
-      colors: {
-        primary: colors.yellow,
-        gray: colors.neutral,
+        heading: ['InterVariable', ...defaultTheme.fontFamily.sans],
       },
       typography: (theme) => ({
         DEFAULT: {
